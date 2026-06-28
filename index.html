@@ -182,7 +182,7 @@ input,select,textarea,button{font-family:inherit}
     <div class="rr-grid">
       <div class="rr-cell"><div class="lbl">Trail RR</div><div class="val val-blue" id="trailRR">—</div></div>
       <div class="rr-cell"><div class="lbl">Fixed RR</div><div class="val val-green" id="fixedRR">—</div></div>
-      <div class="rr-cell"><div class="lbl">Left on table</div><div class="val val-amber" id="diffRR">—</div></div>
+      <div class="rr-cell"><div class="lbl" id="diffLbl">Trail vs plan</div><div class="val val-amber" id="diffRR">—</div></div>
     </div>
   </div>
   <div class="card">
@@ -260,7 +260,7 @@ input,select,textarea,button{font-family:inherit}
     <div class="stat-card"><div class="stat-lbl">Total trades</div><div class="stat-val" id="s-total">0</div><div class="stat-sub" id="s-totalsub"></div></div>
     <div class="stat-card"><div class="stat-lbl">Avg trail RR</div><div class="stat-val" id="s-trr">—</div><div class="stat-sub">trailing stop</div></div>
     <div class="stat-card"><div class="stat-lbl">Avg fixed RR</div><div class="stat-val" id="s-frr">—</div><div class="stat-sub">original plan</div></div>
-    <div class="stat-card"><div class="stat-lbl">Left on table</div><div class="stat-val val-amber" id="s-lost">—</div><div class="stat-sub">avg per trade</div></div>
+    <div class="stat-card"><div class="stat-lbl" id="s-lost-lbl">Trail vs plan</div><div class="stat-val val-amber" id="s-lost">—</div><div class="stat-sub">avg per trade</div></div>
     <div class="stat-card"><div class="stat-lbl">Net P&L</div><div class="stat-val" id="s-pnl">—</div><div class="stat-sub">% of account</div></div>
     <div class="stat-card"><div class="stat-lbl">FOMO trades</div><div class="stat-val val-amber" id="s-fomo">0</div><div class="stat-sub" id="s-fomosub"></div></div>
     <div class="stat-card"><div class="stat-lbl">Revenge trades</div><div class="stat-val val-red" id="s-rev">0</div><div class="stat-sub" id="s-revsub"></div></div>
@@ -475,11 +475,26 @@ function calcRR() {
   var fixed = parseFloat(document.getElementById('fixedTP').value) || 0;
   document.getElementById('trailRR').textContent = (risk && trail) ? '1:' + (trail/risk).toFixed(2) : '—';
   document.getElementById('fixedRR').textContent = (risk && fixed) ? '1:' + (fixed/risk).toFixed(2) : '—';
+  var lblEl = document.getElementById('diffLbl');
+  var valEl = document.getElementById('diffRR');
   if (risk && trail && fixed) {
-    var d = (fixed - trail).toFixed(2);
-    document.getElementById('diffRR').textContent = (d > 0 ? '+' : '') + d + '%';
-    document.getElementById('diffRR').className = 'val ' + (parseFloat(d) > 0 ? 'val-amber' : 'val-green');
-  } else document.getElementById('diffRR').textContent = '—';
+    var d = fixed - trail; // positive = left money on table, negative = trail beat plan
+    if (d > 0.001) {
+      // trailing exited early — left money on the table
+      valEl.textContent = '−' + d.toFixed(2) + '%';
+      valEl.className = 'val val-amber';
+      if (lblEl) lblEl.textContent = 'Left on table';
+    } else if (d < -0.001) {
+      // trailing beat the fixed plan
+      valEl.textContent = '+' + Math.abs(d).toFixed(2) + '%';
+      valEl.className = 'val val-green';
+      if (lblEl) lblEl.textContent = 'Trail gained';
+    } else {
+      valEl.textContent = '0%';
+      valEl.className = 'val val-blue';
+      if (lblEl) lblEl.textContent = 'Same as plan';
+    }
+  } else { valEl.textContent = '—'; if (lblEl) lblEl.textContent = 'Trail vs plan'; }
 }
 
 // ─── SAVE ───
@@ -556,7 +571,7 @@ function renderHistory() {
       + '</div></div>'
       + (tags ? '<div class="trade-tags">' + tags + '</div>' : '')
       + '<div class="rr-pills"><div>Trail: <span>' + trRR + '</span></div><div>Fixed: <span>' + fxRR + '</span></div>'
-      + (diff !== null ? '<div>Table: <span style="color:' + (parseFloat(diff)>0?'var(--amber)':'var(--green)') + '">' + (parseFloat(diff)>0?'+':'') + diff + '%</span></div>' : '')
+      + (diff !== null ? '<div>' + (parseFloat(diff)>0.001?'Left: <span style="color:var(--amber)">−'+parseFloat(diff).toFixed(2)+'%':(parseFloat(diff)<-0.001?'Trail +<span style="color:var(--green)">'+Math.abs(parseFloat(diff)).toFixed(2)+'%':'Trail <span style="color:var(--blue)">=plan')) + '</span></div>' : '')
       + (t.risk ? '<div>Risk: <span>' + t.risk + '%</span></div>' : '') + '</div>'
       + (t.reason ? '<div class="trade-text" style="color:#aaa;font-style:italic">"' + t.reason + '"</div>' : '')
       + (t.notes ? '<div class="trade-text" style="color:var(--muted)">📝 ' + t.notes + '</div>' : '')
@@ -598,7 +613,25 @@ function renderStats() {
   document.getElementById('s-totalsub').textContent = closed.length + ' closed';
   document.getElementById('s-trr').textContent = avgTrail ? '1:'+avgTrail.toFixed(2) : '—';
   document.getElementById('s-frr').textContent = avgFixed ? '1:'+avgFixed.toFixed(2) : '—';
-  document.getElementById('s-lost').textContent = diffs.length ? (avgDiff>0?'+':'')+avgDiff.toFixed(2)+'%' : '—';
+  if (diffs.length) {
+    var lostEl = document.getElementById('s-lost');
+    var lostLbl = document.getElementById('s-lost-lbl');
+    if (avgDiff > 0.001) {
+      lostEl.textContent = '−' + avgDiff.toFixed(2) + '%';
+      lostEl.className = 'stat-val val-amber';
+      if (lostLbl) lostLbl.textContent = 'Left on table';
+    } else if (avgDiff < -0.001) {
+      lostEl.textContent = '+' + Math.abs(avgDiff).toFixed(2) + '%';
+      lostEl.className = 'stat-val val-green';
+      if (lostLbl) lostLbl.textContent = 'Trail gained';
+    } else {
+      lostEl.textContent = '0%';
+      lostEl.className = 'stat-val val-blue';
+      if (lostLbl) lostLbl.textContent = 'Trail = plan';
+    }
+  } else {
+    document.getElementById('s-lost').textContent = '—';
+  }
   document.getElementById('s-pnl').textContent = (netPL>=0?'+':'')+netPL.toFixed(2)+'%';
   document.getElementById('s-pnl').className = 'stat-val ' + (netPL>=0?'val-green':'val-red');
   document.getElementById('s-fomo').textContent = fomos.length;
