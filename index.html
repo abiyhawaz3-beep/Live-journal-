@@ -169,27 +169,25 @@ input,select,textarea,button{font-family:inherit}
   <div class="page-title">📈 Log Trade</div>
 
   <div class="card">
-    <div class="card-title">Chart screenshot</div>
-    <div class="img-box" id="imgBox">
-      <div class="placeholder">
-        <div style="font-size:30px">📷</div>
-        <div>Tap to upload image</div>
-        <div class="img-hint">Or use the paste button below</div>
-      </div>
-      <input type="file" accept="image/*" id="imgInput" onchange="loadImgFile(event)">
-      <img id="imgPreview" onclick="openLightbox(this.src)">
-      <div class="img-actions">
-        <button class="img-action-btn" onclick="clearImg(event)">✕ Remove</button>
-        <button class="img-action-btn" onclick="document.getElementById('imgInput').click();event.stopPropagation()">↺ Change</button>
-      </div>
+    <div class="card-title">Chart screenshots <span style="color:var(--muted);font-weight:400">— up to 4 images</span></div>
+    <div id="imgGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px"></div>
+    <div style="display:flex;gap:8px">
+      <button class="paste-btn" style="flex:1" onclick="document.getElementById('imgInput').click()">📷 Add image</button>
+      <button class="paste-btn" style="flex:1" onclick="pasteFromClipboard()">📋 Paste</button>
     </div>
-    <button class="paste-btn" onclick="pasteFromClipboard()">📋 Paste image from clipboard (Ctrl+V)</button>
+    <input type="file" accept="image/*" id="imgInput" style="display:none" onchange="loadImgFile(event)" multiple>
   </div>
 
   <div class="card">
     <div class="card-title">Trade details</div>
     <div class="row2">
-      <div class="field"><label>Pair / instrument</label><input type="text" id="pair" placeholder="XAUUSD" autocomplete="off" autocorrect="off" autocapitalize="characters"></div>
+      <div class="field"><label>Instrument</label>
+        <select id="pair">
+          <option value="">—</option>
+          <option>NAS</option>
+          <option>SPX</option>
+        </select>
+      </div>
       <div class="field"><label>Date</label><input type="date" id="tradeDate"></div>
     </div>
     <div class="row3">
@@ -429,26 +427,35 @@ function toast(msg){
   setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-// IMAGE
-function setImg(blob){
+// IMAGES (multi)
+var imgDataArr=[];
+
+function renderImgGrid(){
+  var grid=document.getElementById('imgGrid');
+  if(!imgDataArr.length){grid.innerHTML='<div style="grid-column:1/-1;border:2px dashed var(--border2);border-radius:var(--radius);padding:1.5rem;text-align:center;color:var(--muted);font-size:13px">No images yet</div>';return;}
+  grid.innerHTML=imgDataArr.map((src,i)=>`
+    <div style="position:relative">
+      <img src="${src}" style="width:100%;height:100px;object-fit:cover;border-radius:var(--radius-sm);cursor:pointer;display:block" onclick="openLightbox('${src}')">
+      <button onclick="removeImg(${i})" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,.7);border:none;color:#fff;border-radius:50%;width:22px;height:22px;font-size:13px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>`).join('');
+}
+
+function addImgFromBlob(blob){
+  if(imgDataArr.length>=4){toast('Max 4 images per trade');return;}
   var r=new FileReader();
-  r.onload=function(ev){
-    imgData=ev.target.result;
-    var p=document.getElementById('imgPreview');
-    p.src=imgData;
-    document.getElementById('imgBox').classList.add('has-img');
-    toast('Image added ✓');
-  };
+  r.onload=function(ev){imgDataArr.push(ev.target.result);renderImgGrid();toast('Image added ✓');};
   r.readAsDataURL(blob);
 }
-function loadImgFile(e){var f=e.target.files[0];if(f)setImg(f);}
-function clearImg(e){
-  e&&e.stopPropagation();
-  imgData=null;
-  var p=document.getElementById('imgPreview');p.src='';
-  document.getElementById('imgBox').classList.remove('has-img');
-  document.getElementById('imgInput').value='';
+
+function loadImgFile(e){
+  Array.from(e.target.files).forEach(f=>{if(f)addImgFromBlob(f);});
+  e.target.value='';
 }
+
+function removeImg(i){imgDataArr.splice(i,1);renderImgGrid();}
+
+function clearAllImgs(){imgDataArr=[];renderImgGrid();}
+
 async function pasteFromClipboard(){
   try{
     var items=await navigator.clipboard.read();
@@ -456,36 +463,22 @@ async function pasteFromClipboard(){
       for(var type of item.types){
         if(type.startsWith('image/')){
           var blob=await item.getType(type);
-          setImg(blob);return;
+          addImgFromBlob(blob);return;
         }
       }
     }
     toast('No image found in clipboard');
-  }catch(e){
-    // fallback: ask user to use Ctrl+V
-    toast('Tap the image box then press Ctrl+V');
-  }
+  }catch(e){toast('Tap the page first then press Ctrl+V');}
 }
-// Global paste listener
+
 document.addEventListener('paste',function(e){
   var items=e.clipboardData&&e.clipboardData.items;
   if(!items)return;
   for(var i=0;i<items.length;i++){
-    if(items[i].type.indexOf('image')!==-1){
-      setImg(items[i].getAsFile());
-      break;
-    }
+    if(items[i].type.indexOf('image')!==-1){addImgFromBlob(items[i].getAsFile());break;}
   }
 });
-// Drag drop
-var box=document.getElementById('imgBox');
-box.addEventListener('dragover',function(e){e.preventDefault();box.classList.add('drag-over');});
-box.addEventListener('dragleave',function(){box.classList.remove('drag-over');});
-box.addEventListener('drop',function(e){
-  e.preventDefault();box.classList.remove('drag-over');
-  var f=e.dataTransfer.files[0];
-  if(f&&f.type.startsWith('image/'))setImg(f);
-});
+
 
 // LIGHTBOX
 function openLightbox(src){
@@ -520,8 +513,8 @@ function calcRR(){
 
 // SAVE
 function saveTrade(){
-  var pair=document.getElementById('pair').value.trim();
-  if(!pair){toast('Add a pair/instrument first');return;}
+  var pair=document.getElementById('pair').value;
+  if(!pair){toast('Select an instrument first');return;}
   var t={
     id:Date.now(),pair:pair.toUpperCase(),
     date:document.getElementById('tradeDate').value||new Date().toISOString().split('T')[0],
@@ -537,7 +530,7 @@ function saveTrade(){
     notes:document.getElementById('notes').value,
     tags:Object.keys(activeTags).filter(k=>activeTags[k]),
     rules:Object.keys(activeRules).filter(k=>activeRules[k]),
-    img:imgData
+    imgs:imgDataArr.slice()
   };
   trades.unshift(t);save();
   sendToTelegram(t);
@@ -550,8 +543,7 @@ function saveTrade(){
 function resetForm(){
   ['pair','direction','session','result','risk','actual','trailExit','fixedTP','reason','emotion','notes'].forEach(id=>{document.getElementById(id).value='';});
   activeTags={};activeRules={};
-  document.querySelectorAll('.tag').forEach(el=>{el.className='tag';});
-  clearImg();calcRR();
+  clearAllImgs();calcRR();
   document.getElementById('tradeDate').value=new Date().toISOString().split('T')[0];
 }
 
@@ -597,8 +589,7 @@ function renderHistory(){
       </div>
       ${t.reason?`<div class="trade-text" style="color:#aaa;font-style:italic">"${t.reason}"</div>`:''}
       ${t.notes?`<div class="trade-text" style="color:var(--muted)">📝 ${t.notes}</div>`:''}
-      ${t.img?`<img class="trade-img-thumb" src="${t.img}" onclick="openLightbox(this.src)">`:''}
-    </div>`;
+      ${(t.imgs&&t.imgs.length)?t.imgs.map(src=>`<img class="trade-img-thumb" src="${src}" onclick="openLightbox(this.src)">`).join(''):(t.img?`<img class="trade-img-thumb" src="${t.img}" onclick="openLightbox(this.src)">`:'')}
   }).join('');
 }
 function deleteTrade(id){
@@ -756,19 +747,6 @@ async function sendToTelegram(t){
   var trRR=t.risk&&t.trailExit?'1:'+(t.trailExit/t.risk).toFixed(2):'—';
   var fxRR=t.risk&&t.fixedTP?'1:'+(t.fixedTP/t.risk).toFixed(2):'—';
   var hashtags=t.result==='Win'?'#Abiy #Abiynas #Abiynaswin':t.result==='Loss'?'#Abiy #Abiynas #Abiynaslose':'#Abiy #Abiynas #Abiynasbe';
-  var lines=[
-    emoji+' *'+( t.direction?t.direction+' ':'')+t.pair+'*',
-    resEmoji+' Result: *'+( t.result||'—')+'*',
-    '⚖️ RR (trail): *'+trRR+'*',
-    '🎯 RR (fixed plan): *'+fxRR+'*',
-    t.session?'🕐 Session: '+t.session:'',
-    t.reason?'📝 '+t.reason:'',
-    t.emotion?'🧠 Emotion: '+t.emotion:'',
-    '',
-    hashtags
-  ].filter(l=>l!==undefined&&l!==null&&!(l===''&&lines)).join('\n');
-
-  // rebuild cleanly
   var msg=[
     emoji+' *'+(t.direction?t.direction+' ':'')+t.pair+'*',
     resEmoji+' Result: *'+(t.result||'—')+'*',
@@ -780,15 +758,42 @@ async function sendToTelegram(t){
   if(t.emotion) msg.push('🧠 Emotion: '+t.emotion);
   msg.push('');
   msg.push(hashtags);
+  var text=msg.join('\n');
 
   try{
-    var res=await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendMessage',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({chat_id:tgSettings.chatId,text:msg.join('\n'),parse_mode:'Markdown'})
-    });
-    var data=await res.json();
-    if(!data.ok) throw new Error(data.description);
+    var imgs=t.imgs&&t.imgs.length?t.imgs:(t.img?[t.img]:[]);
+
+    if(imgs.length===0){
+      // just send text
+      await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendMessage',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({chat_id:tgSettings.chatId,text:text,parse_mode:'Markdown'})
+      });
+    } else if(imgs.length===1){
+      // send photo with caption
+      var blob=await (await fetch(imgs[0])).blob();
+      var fd=new FormData();
+      fd.append('chat_id',tgSettings.chatId);
+      fd.append('caption',text);
+      fd.append('parse_mode','Markdown');
+      fd.append('photo',blob,'chart.jpg');
+      await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendPhoto',{method:'POST',body:fd});
+    } else {
+      // send media group with caption on first image
+      var mediaArr=[];
+      var fdMulti=new FormData();
+      fdMulti.append('chat_id',tgSettings.chatId);
+      for(var i=0;i<imgs.length;i++){
+        var b=await (await fetch(imgs[i])).blob();
+        var fname='photo'+i+'.jpg';
+        fdMulti.append(fname,b,fname);
+        var mediaObj={type:'photo',media:'attach://'+fname};
+        if(i===0){mediaObj.caption=text;mediaObj.parse_mode='Markdown';}
+        mediaArr.push(mediaObj);
+      }
+      fdMulti.append('media',JSON.stringify(mediaArr));
+      await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendMediaGroup',{method:'POST',body:fdMulti});
+    }
     toast('Posted to Telegram ✓');
   }catch(e){
     toast('Telegram error: '+e.message);
@@ -861,7 +866,7 @@ function exportCSV(){
 
 // INIT
 document.getElementById('tradeDate').value=new Date().toISOString().split('T')[0];
-renderHistory();renderChecklist();loadTgSettings();
+renderHistory();renderChecklist();loadTgSettings();renderImgGrid();
 
 // SERVICE WORKER
 if('serviceWorker' in navigator){
