@@ -22,71 +22,44 @@
   --purple:#a855f7;--purple-bg:#160a20;
   --radius:10px;--radius-sm:6px;
 }
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:72px;overscroll-behavior:none}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:72px}
 input,select,textarea,button{font-family:inherit}
-
-/* NAV */
-.nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
-.nav-btn{flex:1;padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--muted);font-size:10px;cursor:pointer;transition:color .15s}
-.nav-btn.active{color:var(--blue)}
-.nav-btn svg{width:22px;height:22px}
-
-/* PAGES */
 .page{display:none;padding:1rem;max-width:600px;margin:0 auto}
 .page.active{display:block}
 .page-title{font-size:20px;font-weight:700;margin-bottom:1rem}
-
-/* CARDS */
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:.75rem}
 .card-title{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem}
-
-/* FORM */
 .field{margin-bottom:.75rem}
 .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
-.field input,.field select,.field textarea{width:100%;padding:11px 12px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-size:16px;-webkit-appearance:none;appearance:none}
+.field input,.field select,.field textarea{width:100%;padding:11px 12px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-size:16px;-webkit-appearance:none}
 .field textarea{resize:vertical;min-height:72px;line-height:1.5}
 .field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-
-/* IMG UPLOAD */
-.img-box{border:2px dashed var(--border2);border-radius:var(--radius);padding:1.25rem;text-align:center;color:var(--muted);font-size:13px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:100px;transition:border-color .2s;cursor:pointer}
-.img-box.focused,.img-box.drag-over{border-color:var(--blue)}
-.img-box.has-img{padding:.5rem}
-.img-box .placeholder{display:flex;flex-direction:column;align-items:center;gap:6px}
-.img-box.has-img .placeholder{display:none}
-.img-box input[type=file]{position:absolute;opacity:0;width:100%;height:100%;cursor:pointer;top:0;left:0;z-index:1}
-.img-box img{max-width:100%;max-height:240px;border-radius:var(--radius-sm);display:none}
-.img-box.has-img img{display:block}
-.img-hint{font-size:11px;color:var(--dim)}
-.img-actions{display:none;gap:8px;margin-top:8px;z-index:2;position:relative}
-.img-box.has-img .img-actions{display:flex}
-.img-action-btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border2);background:var(--card2);color:var(--muted);font-size:12px;cursor:pointer}
-.img-action-btn:hover{color:var(--red)}
-
-/* PASTE AREA */
-.paste-btn{width:100%;padding:10px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--blue);font-size:14px;cursor:pointer;margin-top:6px;z-index:2;position:relative}
-
+/* IMG */
+.img-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;min-height:60px}
+.img-empty{grid-column:1/-1;border:2px dashed var(--border2);border-radius:var(--radius);padding:1.5rem;text-align:center;color:var(--muted);font-size:13px}
+.img-thumb{width:100%;height:110px;object-fit:cover;border-radius:var(--radius-sm);display:block;cursor:pointer}
+.img-wrap{position:relative}
+.img-del{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.8);border:none;color:#fff;border-radius:50%;width:24px;height:24px;font-size:13px;cursor:pointer;line-height:24px;text-align:center;padding:0}
+.img-btns{display:flex;gap:8px}
+.img-btn{flex:1;padding:10px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--blue);font-size:14px;cursor:pointer;text-align:center}
 /* RR */
 .rr-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}
 .rr-cell{background:var(--card2);border-radius:var(--radius-sm);padding:10px;text-align:center}
 .rr-cell .lbl{font-size:10px;color:var(--muted);margin-bottom:4px}
 .rr-cell .val{font-size:18px;font-weight:700}
-.val-green{color:var(--green)}.val-red{color:var(--red)}.val-blue{color:var(--blue)}.val-amber{color:var(--amber)}.val-purple{color:var(--purple)}
-
+.val-green{color:var(--green)}.val-red{color:var(--red)}.val-blue{color:var(--blue)}.val-amber{color:var(--amber)}
 /* TAGS */
 .tags{display:flex;gap:6px;flex-wrap:wrap}
-.tag{padding:8px 14px;border-radius:20px;font-size:13px;font-weight:500;border:1px solid var(--border2);cursor:pointer;background:var(--card2);color:var(--muted);transition:.15s;user-select:none}
+.tag{padding:8px 14px;border-radius:20px;font-size:13px;font-weight:500;border:1px solid var(--border2);cursor:pointer;background:var(--card2);color:var(--muted);user-select:none;transition:.15s}
 .tag.on-plan{background:var(--green-bg);color:var(--green);border-color:var(--green)}
 .tag.on-fomo{background:var(--amber-bg);color:var(--amber);border-color:var(--amber)}
 .tag.on-miss{background:var(--red-bg);color:var(--red);border-color:var(--red)}
 .tag.on-rev{background:var(--purple-bg);color:var(--purple);border-color:var(--purple)}
 .tag.on-rule{background:var(--blue-bg);color:var(--blue);border-color:var(--blue)}
-
-/* SAVE BTN */
-.save-btn{width:100%;padding:14px;border-radius:var(--radius);border:none;background:var(--blue);color:#fff;font-size:16px;font-weight:600;cursor:pointer;margin-top:4px;transition:opacity .15s}
+.save-btn{width:100%;padding:14px;border-radius:var(--radius);border:none;background:var(--blue);color:#fff;font-size:16px;font-weight:600;cursor:pointer;margin-top:4px}
 .save-btn:active{opacity:.8}
-
 /* HISTORY */
 .filter-bar{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:1rem;scrollbar-width:none}
 .filter-bar::-webkit-scrollbar{display:none}
@@ -111,9 +84,7 @@ input,select,textarea,button{font-family:inherit}
 .trade-text{font-size:13px;line-height:1.5;margin-top:.4rem}
 .trade-img-thumb{width:100%;max-height:200px;object-fit:cover;border-radius:var(--radius-sm);margin-top:.6rem;cursor:pointer}
 .del-btn{background:none;border:none;color:var(--dim);font-size:20px;cursor:pointer;padding:2px 6px;line-height:1}
-.del-btn:hover{color:var(--red)}
 .empty{text-align:center;padding:3rem 1rem;color:var(--muted);font-size:14px;line-height:1.7}
-
 /* STATS */
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.75rem}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem}
@@ -126,40 +97,37 @@ input,select,textarea,button{font-family:inherit}
 .bar-track{background:var(--card2);border-radius:4px;height:8px;overflow:hidden}
 .bar-fill{height:100%;border-radius:4px;transition:.5s}
 .insight{border-left:3px solid var(--blue);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:.75rem 1rem;margin-bottom:.5rem;font-size:13px;line-height:1.6;color:#ccc;background:var(--card)}
-.insight.warn{border-color:var(--amber)}
-.insight.good{border-color:var(--green)}
-.insight.bad{border-color:var(--red)}
+.insight.warn{border-color:var(--amber)}.insight.good{border-color:var(--green)}.insight.bad{border-color:var(--red)}
 .streak-box{background:var(--card2);border-radius:var(--radius-sm);padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem}
 .prog-bar{background:var(--card2);border-radius:4px;height:12px;overflow:hidden;margin:.5rem 0}
 .prog-fill{height:100%;border-radius:4px;background:var(--blue);transition:.6s}
 .prog-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
-
 /* CHECKLIST */
 .check-item{display:flex;align-items:center;gap:12px;padding:.75rem 0;border-bottom:1px solid var(--border);cursor:pointer;user-select:none}
 .check-item:last-child{border:none}
 .check-icon{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;border:1.5px solid var(--border2);transition:.2s}
 .check-on{background:var(--green);border-color:var(--green);color:#fff}
 .check-text{font-size:14px;color:#ccc;line-height:1.4}
-
-/* BACKUP */
 .action-btn{width:100%;padding:12px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--card2);color:var(--text);font-size:15px;cursor:pointer;margin-bottom:.5rem;display:flex;align-items:center;justify-content:center;gap:8px}
-.action-btn:active{opacity:.7}
-
-/* LIGHTBOX */
-.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:999;align-items:center;justify-content:center;padding:1rem}
-.lightbox.open{display:flex}
-.lightbox img{max-width:100%;max-height:90vh;border-radius:var(--radius)}
-.lightbox-close{position:absolute;top:1rem;right:1rem;color:#fff;font-size:28px;cursor:pointer;background:none;border:none;line-height:1}
-
 /* TOGGLE */
 .toggle{width:44px;height:26px;background:var(--border2);border-radius:13px;cursor:pointer;position:relative;transition:.3s;flex-shrink:0}
 .toggle.on{background:var(--green)}
 .toggle-knob{width:20px;height:20px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:.3s}
 .toggle.on .toggle-knob{left:21px}
-
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:999;align-items:center;justify-content:center;padding:1rem}
+.lightbox.open{display:flex}
+.lightbox img{max-width:100%;max-height:90vh;border-radius:var(--radius)}
+.lightbox-close{position:absolute;top:1rem;right:1rem;color:#fff;font-size:28px;cursor:pointer;background:none;border:none;line-height:1}
 /* TOAST */
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#222;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap;z-index:200}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#222;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap;z-index:300}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* NAV */
+.nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
+.nav-btn{flex:1;padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--muted);font-size:10px;cursor:pointer;transition:color .15s}
+.nav-btn.active{color:var(--blue)}
+.nav-btn svg{width:22px;height:22px}
+.date-display{padding:11px 12px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--muted);font-size:15px}
 </style>
 </head>
 <body>
@@ -167,28 +135,27 @@ input,select,textarea,button{font-family:inherit}
 <!-- LOG PAGE -->
 <div class="page active" id="page-log">
   <div class="page-title">📈 Log Trade</div>
-
   <div class="card">
-    <div class="card-title">Chart screenshots <span style="color:var(--muted);font-weight:400">— up to 4 images</span></div>
-    <div id="imgGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px"></div>
-    <div style="display:flex;gap:8px">
-      <button class="paste-btn" style="flex:1" id="addImgBtn">📷 Add image</button>
-      <button class="paste-btn" style="flex:1" onclick="pasteFromClipboard()">📋 Paste (Ctrl+V)</button>
+    <div class="card-title">Chart screenshots <span style="color:var(--muted);font-weight:400">— up to 4</span></div>
+    <div class="img-grid" id="imgGrid"></div>
+    <div class="img-btns">
+      <button class="img-btn" id="addImgBtn">📷 Add image</button>
+      <button class="img-btn" id="pasteBtn">📋 Paste (Ctrl+V)</button>
     </div>
     <input type="file" accept="image/*" id="imgInput" style="display:none" multiple>
   </div>
-
   <div class="card">
     <div class="card-title">Trade details</div>
     <div class="row2">
-      <div class="field"><label>Instrument</label>
+      <div class="field">
+        <label>Instrument</label>
         <select id="pair">
-          <option value="">—</option>
+          <option value="">— Select —</option>
           <option>NAS</option>
           <option>SPX</option>
         </select>
       </div>
-      <div class="field"><label>Date</label><div style="padding:11px 12px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--muted);font-size:15px" id="tradeDateDisplay"></div><input type="hidden" id="tradeDate"></div>
+      <div class="field"><label>Date</label><div class="date-display" id="tradeDateDisplay"></div><input type="hidden" id="tradeDate"></div>
     </div>
     <div class="row3">
       <div class="field"><label>Direction</label>
@@ -202,41 +169,37 @@ input,select,textarea,button{font-family:inherit}
       </div>
     </div>
   </div>
-
   <div class="card">
-    <div class="card-title">Risk / reward calculator</div>
+    <div class="card-title">Risk / reward</div>
     <div class="row2">
-      <div class="field"><label>Risk % on account</label><input type="number" id="risk" placeholder="0.5" step="0.1" inputmode="decimal" oninput="calcRR()"></div>
-      <div class="field"><label>Actual P&L %</label><input type="number" id="actual" placeholder="0.75" step="0.1" inputmode="decimal" oninput="calcRR()"></div>
+      <div class="field"><label>Risk %</label><input type="number" id="risk" placeholder="0.5" step="0.1" inputmode="decimal"></div>
+      <div class="field"><label>Actual P&L %</label><input type="number" id="actual" placeholder="0.75" step="0.1" inputmode="decimal"></div>
     </div>
     <div class="row2">
-      <div class="field"><label>Trailing stop exit %</label><input type="number" id="trailExit" placeholder="0.6" step="0.1" inputmode="decimal" oninput="calcRR()"></div>
-      <div class="field"><label>Fixed TP % (original plan)</label><input type="number" id="fixedTP" placeholder="1.0" step="0.1" inputmode="decimal" oninput="calcRR()"></div>
+      <div class="field"><label>Trailing stop exit %</label><input type="number" id="trailExit" placeholder="0.6" step="0.1" inputmode="decimal"></div>
+      <div class="field"><label>Fixed TP % (plan)</label><input type="number" id="fixedTP" placeholder="1.0" step="0.1" inputmode="decimal"></div>
     </div>
     <div class="rr-grid">
       <div class="rr-cell"><div class="lbl">Trail RR</div><div class="val val-blue" id="trailRR">—</div></div>
-      <div class="rr-cell"><div class="lbl">Fixed RR (plan)</div><div class="val val-green" id="fixedRR">—</div></div>
+      <div class="rr-cell"><div class="lbl">Fixed RR</div><div class="val val-green" id="fixedRR">—</div></div>
       <div class="rr-cell"><div class="lbl">Left on table</div><div class="val val-amber" id="diffRR">—</div></div>
     </div>
   </div>
-
   <div class="card">
-    <div class="card-title">Trade type — tap all that apply</div>
+    <div class="card-title">Trade type</div>
     <div class="tags">
-      <div class="tag" id="tag-plan" onclick="toggleTag('plan')">✅ Planned</div>
-      <div class="tag" id="tag-fomo" onclick="toggleTag('fomo')">⚡ FOMO</div>
-      <div class="tag" id="tag-miss" onclick="toggleTag('miss')">👁 Missed</div>
-      <div class="tag" id="tag-rev" onclick="toggleTag('rev')">🔥 Revenge</div>
+      <div class="tag" id="tag-plan">✅ Planned</div>
+      <div class="tag" id="tag-fomo">⚡ FOMO</div>
+      <div class="tag" id="tag-miss">👁 Missed</div>
+      <div class="tag" id="tag-rev">🔥 Revenge</div>
     </div>
   </div>
-
   <div class="card">
-    <div class="card-title">Setup / entry reason</div>
-    <div class="field"><textarea id="reason" placeholder="e.g. Break of structure at HTF level, London open, confluent OB..."></textarea></div>
+    <div class="card-title">Entry reason</div>
+    <div class="field"><textarea id="reason" placeholder="e.g. Break of structure at HTF OB, London open..."></textarea></div>
   </div>
-
   <div class="card">
-    <div class="card-title">Emotions during trade</div>
+    <div class="card-title">Emotions</div>
     <div class="field">
       <select id="emotion">
         <option value="">Select...</option>
@@ -250,37 +213,34 @@ input,select,textarea,button{font-family:inherit}
       </select>
     </div>
   </div>
-
   <div class="card">
-    <div class="card-title">Rules followed — tap all that apply</div>
+    <div class="card-title">Rules followed</div>
     <div class="tags">
-      <div class="tag" id="rule-sl" onclick="toggleRule('sl')">SL placed</div>
-      <div class="tag" id="rule-tp" onclick="toggleRule('tp')">TP planned</div>
-      <div class="tag" id="rule-conf" onclick="toggleRule('conf')">Confluence</div>
-      <div class="tag" id="rule-size" onclick="toggleRule('size')">Correct size</div>
-      <div class="tag" id="rule-ses" onclick="toggleRule('ses')">Right session</div>
+      <div class="tag" id="rule-sl">SL placed</div>
+      <div class="tag" id="rule-tp">TP planned</div>
+      <div class="tag" id="rule-conf">Confluence</div>
+      <div class="tag" id="rule-size">Correct size</div>
+      <div class="tag" id="rule-ses">Right session</div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title">Lessons & notes</div>
-    <div class="field"><textarea id="notes" placeholder="What would you do differently? What did you learn?"></textarea></div>
+    <div class="field"><textarea id="notes" placeholder="What would you do differently?"></textarea></div>
   </div>
-
-  <button class="save-btn" onclick="saveTrade()">💾 Save Trade</button>
+  <button class="save-btn" id="saveBtn">💾 Save Trade</button>
 </div>
 
 <!-- HISTORY PAGE -->
 <div class="page" id="page-history">
   <div class="page-title">📋 History</div>
-  <div class="filter-bar" id="filterBar">
-    <div class="chip active" onclick="setFilter('all',this)">All</div>
-    <div class="chip" onclick="setFilter('Win',this)">Wins</div>
-    <div class="chip" onclick="setFilter('Loss',this)">Losses</div>
-    <div class="chip" onclick="setFilter('plan',this)">Planned</div>
-    <div class="chip" onclick="setFilter('fomo',this)">FOMO</div>
-    <div class="chip" onclick="setFilter('miss',this)">Missed</div>
-    <div class="chip" onclick="setFilter('rev',this)">Revenge</div>
+  <div class="filter-bar">
+    <div class="chip active" data-filter="all">All</div>
+    <div class="chip" data-filter="Win">Wins</div>
+    <div class="chip" data-filter="Loss">Losses</div>
+    <div class="chip" data-filter="plan">Planned</div>
+    <div class="chip" data-filter="fomo">FOMO</div>
+    <div class="chip" data-filter="miss">Missed</div>
+    <div class="chip" data-filter="rev">Revenge</div>
   </div>
   <div id="historyList"></div>
 </div>
@@ -288,119 +248,107 @@ input,select,textarea,button{font-family:inherit}
 <!-- STATS PAGE -->
 <div class="page" id="page-stats">
   <div class="page-title">📊 Analytics</div>
-
   <div class="card">
-    <div class="card-title">Prop firm payout tracker (0.5%/day × 4 days)</div>
-    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:4px">
-      <span>Qualifying days</span><span id="propDays" style="color:var(--text);font-weight:600">0 / 4</span>
-    </div>
+    <div class="card-title">Prop firm tracker (0.5%/day × 4 days)</div>
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:4px"><span>Qualifying days</span><span id="propDays" style="color:var(--text);font-weight:600">0 / 4</span></div>
     <div class="prog-bar"><div class="prog-fill" id="propBar" style="width:0%"></div></div>
-    <div class="prog-labels"><span>Need 0.5%+ profit per day</span><span id="propTotal">0% total</span></div>
+    <div class="prog-labels"><span>0.5%+ profit per day</span><span id="propTotal">0%</span></div>
     <div id="propStatus" style="font-size:12px;color:var(--muted);margin-top:6px"></div>
   </div>
-
-  <div class="stat-grid" id="statGrid">
+  <div class="stat-grid">
     <div class="stat-card"><div class="stat-lbl">Win rate</div><div class="stat-val" id="s-wr">—</div><div class="stat-sub" id="s-wrsub"></div></div>
     <div class="stat-card"><div class="stat-lbl">Total trades</div><div class="stat-val" id="s-total">0</div><div class="stat-sub" id="s-totalsub"></div></div>
-    <div class="stat-card"><div class="stat-lbl">Avg trail RR</div><div class="stat-val" id="s-trr">—</div><div class="stat-sub">with trailing stop</div></div>
+    <div class="stat-card"><div class="stat-lbl">Avg trail RR</div><div class="stat-val" id="s-trr">—</div><div class="stat-sub">trailing stop</div></div>
     <div class="stat-card"><div class="stat-lbl">Avg fixed RR</div><div class="stat-val" id="s-frr">—</div><div class="stat-sub">original plan</div></div>
-    <div class="stat-card"><div class="stat-lbl">Left on table</div><div class="stat-val val-amber" id="s-lost">—</div><div class="stat-sub">avg % per trade</div></div>
+    <div class="stat-card"><div class="stat-lbl">Left on table</div><div class="stat-val val-amber" id="s-lost">—</div><div class="stat-sub">avg per trade</div></div>
     <div class="stat-card"><div class="stat-lbl">Net P&L</div><div class="stat-val" id="s-pnl">—</div><div class="stat-sub">% of account</div></div>
     <div class="stat-card"><div class="stat-lbl">FOMO trades</div><div class="stat-val val-amber" id="s-fomo">0</div><div class="stat-sub" id="s-fomosub"></div></div>
     <div class="stat-card"><div class="stat-lbl">Revenge trades</div><div class="stat-val val-red" id="s-rev">0</div><div class="stat-sub" id="s-revsub"></div></div>
   </div>
-
   <div class="section-head">Session performance</div>
   <div class="card" id="sessionBars"></div>
-
   <div class="section-head">Streaks</div>
   <div class="card" id="streakBox"></div>
-
   <div class="section-head">Rule adherence</div>
   <div class="card" id="ruleBox"></div>
-
   <div class="section-head">Insights</div>
   <div id="insightsBox"></div>
 </div>
 
-<!-- CHECKLIST PAGE -->
+<!-- TOOLS PAGE -->
 <div class="page" id="page-check">
-  <div class="page-title">✅ Pre-trade Checklist</div>
+  <div class="page-title">🛠 Tools</div>
+  <div class="section-head">Pre-trade checklist</div>
   <div class="card">
     <div id="checkItems"></div>
-    <button class="action-btn" style="margin-top:.75rem;color:var(--muted)" onclick="resetChecklist()">↺ Reset all</button>
+    <button class="action-btn" style="margin-top:.75rem;color:var(--muted)" id="resetCheckBtn">↺ Reset checklist</button>
   </div>
   <div class="card">
     <div class="card-title">Daily target tracker</div>
     <div class="row2">
-      <div class="field"><label>Today's P&L %</label><input type="number" id="todayPL" placeholder="0.0" step="0.1" inputmode="decimal" oninput="updateDaily()"></div>
-      <div class="field"><label>Daily target %</label><input type="number" id="todayTarget" placeholder="0.5" step="0.1" inputmode="decimal" oninput="updateDaily()"></div>
+      <div class="field"><label>Today's P&L %</label><input type="number" id="todayPL" placeholder="0.0" step="0.1" inputmode="decimal"></div>
+      <div class="field"><label>Target %</label><input type="number" id="todayTarget" placeholder="0.5" step="0.1" inputmode="decimal"></div>
     </div>
     <div class="prog-bar"><div class="prog-fill" id="dailyBar" style="width:0%;background:var(--blue)"></div></div>
-    <div class="prog-labels"><span id="dailyLeft">Enter your P&L above</span><span id="dailyPct"></span></div>
+    <div class="prog-labels"><span id="dailyLeft">Enter P&L above</span><span id="dailyPct"></span></div>
   </div>
-
   <div class="section-head">Telegram auto-post</div>
   <div class="card">
-    <div style="font-size:13px;color:var(--muted);margin-bottom:.75rem;line-height:1.6">Every trade you save will automatically post to your Telegram group. Enter your bot token and group chat ID below.</div>
-    <div class="field">
-      <label>Bot token</label>
-      <input type="text" id="tg-token" placeholder="1234567890:AAFxxx..." autocomplete="off" autocorrect="off" autocapitalize="none" oninput="saveTgSettings()">
-    </div>
-    <div class="field">
-      <label>Group chat ID (starts with -)</label>
-      <input type="text" id="tg-chatid" placeholder="-1001234567890" autocomplete="off" autocorrect="off" oninput="saveTgSettings()">
-    </div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:.75rem;line-height:1.6">Trades auto-post to your Telegram group when saved.</div>
+    <div class="field"><label>Bot token</label><input type="text" id="tg-token" placeholder="1234567890:AAFxxx..." autocomplete="off" autocorrect="off" autocapitalize="none"></div>
+    <div class="field"><label>Group chat ID</label><input type="text" id="tg-chatid" placeholder="-1001234567890" autocomplete="off"></div>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:.75rem">
       <div style="font-size:13px;color:var(--muted)">Auto-post enabled</div>
-      <div class="toggle" id="tg-toggle" onclick="toggleTelegram()"><div class="toggle-knob"></div></div>
+      <div class="toggle" id="tg-toggle"><div class="toggle-knob"></div></div>
     </div>
-    <button class="action-btn" onclick="testTelegram()">📨 Send test message</button>
+    <button class="action-btn" id="testTgBtn">📨 Send test message</button>
     <div id="tg-status" style="font-size:12px;color:var(--muted);margin-top:.5rem;text-align:center"></div>
     <div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:1rem;margin-bottom:.5rem">Posted messages — tap 🗑 to delete from group</div>
     <div id="tg-history"></div>
   </div>
-
   <div class="section-head">Backup & restore</div>
   <div class="card">
-    <button class="action-btn" onclick="exportData()">⬇️ Export trades (backup)</button>
-    <button class="action-btn" onclick="document.getElementById('importFile').click()">⬆️ Import trades (restore)</button>
-    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
-    <button class="action-btn" onclick="exportCSV()">📊 Export to Excel / CSV</button>
+    <button class="action-btn" id="exportBtn">⬇️ Export backup (JSON)</button>
+    <button class="action-btn" id="importBtnShow">⬆️ Import backup</button>
+    <input type="file" id="importFile" accept=".json" style="display:none">
+    <button class="action-btn" id="csvBtn">📊 Export to Excel / CSV</button>
   </div>
 </div>
 
 <!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close">✕</button>
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">✕</button>
   <img id="lightboxImg">
 </div>
-
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <!-- NAV -->
 <nav class="nav">
-  <button class="nav-btn active" onclick="showPage('log',this)">
+  <button class="nav-btn active" data-page="log">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>Log
   </button>
-  <button class="nav-btn" onclick="showPage('history',this);renderHistory()">
+  <button class="nav-btn" data-page="history">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h7"/></svg>History
   </button>
-  <button class="nav-btn" onclick="showPage('stats',this);renderStats()">
+  <button class="nav-btn" data-page="stats">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>Stats
   </button>
-  <button class="nav-btn" onclick="showPage('check',this)">
+  <button class="nav-btn" data-page="check">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Tools
   </button>
 </nav>
 
 <script>
-var trades=JSON.parse(localStorage.getItem('tj_trades')||'[]');
-var checkState=JSON.parse(localStorage.getItem('tj_checks')||'{}');
-var activeTags={};var activeRules={};var imgData=null;var histFilter='all';
+// ─── STATE ───
+var trades = JSON.parse(localStorage.getItem('tj_trades') || '[]');
+var checkState = JSON.parse(localStorage.getItem('tj_checks') || '{}');
+var tgSettings = JSON.parse(localStorage.getItem('tj_tg') || '{"token":"","chatId":"","enabled":false}');
+var imgDataArr = [];
+var activeTags = {};
+var activeRules = {};
+var histFilter = 'all';
 
-var CHECKS=[
+var CHECKS = [
   'Checked higher timeframe trend direction',
   'Entry is at a key level (OB, FVG, S/R)',
   'At least 2 confluences present',
@@ -413,410 +361,394 @@ var CHECKS=[
   'Position size is max 0.5% risk'
 ];
 
-function save(){localStorage.setItem('tj_trades',JSON.stringify(trades));}
-
-function showPage(name,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  window.scrollTo(0,0);
+// ─── HELPERS ───
+function saveT() { localStorage.setItem('tj_trades', JSON.stringify(trades)); }
+function toast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2500);
+}
+function setDate() {
+  var now = new Date();
+  document.getElementById('tradeDate').value = now.toISOString().split('T')[0];
+  document.getElementById('tradeDateDisplay').textContent = now.toLocaleDateString('en-GB', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
 }
 
-function toast(msg){
-  var t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
+// ─── NAV ───
+document.querySelectorAll('.nav-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var page = this.getAttribute('data-page');
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    document.getElementById('page-' + page).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
+    this.classList.add('active');
+    window.scrollTo(0, 0);
+    if (page === 'history') renderHistory();
+    if (page === 'stats') renderStats();
+  });
+});
 
-// IMAGES (multi)
-var imgDataArr=[];
-
-function renderImgGrid(){
-  var grid=document.getElementById('imgGrid');
-  if(!imgDataArr.length){
-    grid.innerHTML='<div style="grid-column:1/-1;border:2px dashed var(--border2);border-radius:var(--radius);padding:1.5rem;text-align:center;color:var(--muted);font-size:13px">No images yet — click Add image or paste</div>';
+// ─── IMAGES ───
+function renderImgGrid() {
+  var grid = document.getElementById('imgGrid');
+  if (!imgDataArr.length) {
+    grid.innerHTML = '<div class="img-empty">No images — tap Add or press Ctrl+V to paste</div>';
     return;
   }
-  grid.innerHTML=imgDataArr.map((src,i)=>
-    '<div style="position:relative">' +
-    '<img src="'+src+'" style="width:100%;height:110px;object-fit:cover;border-radius:var(--radius-sm);cursor:pointer;display:block" data-idx="'+i+'">' +
-    '<button data-del="'+i+'" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,.75);border:none;color:#fff;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;line-height:24px;text-align:center;padding:0">✕</button>' +
-    '</div>'
-  ).join('');
-  // attach events after render
-  grid.querySelectorAll('img[data-idx]').forEach(function(el){
-    el.addEventListener('click',function(){openLightbox(imgDataArr[parseInt(this.getAttribute('data-idx'))]);});
+  grid.innerHTML = imgDataArr.map(function(src, i) {
+    return '<div class="img-wrap">'
+      + '<img class="img-thumb" src="' + src + '" data-idx="' + i + '">'
+      + '<button class="img-del" data-del="' + i + '">✕</button>'
+      + '</div>';
+  }).join('');
+  grid.querySelectorAll('.img-thumb').forEach(function(el) {
+    el.addEventListener('click', function() { openLightbox(imgDataArr[+this.dataset.idx]); });
   });
-  grid.querySelectorAll('button[data-del]').forEach(function(el){
-    el.addEventListener('click',function(e){e.stopPropagation();removeImg(parseInt(this.getAttribute('data-del')));});
+  grid.querySelectorAll('.img-del').forEach(function(el) {
+    el.addEventListener('click', function() { imgDataArr.splice(+this.dataset.del, 1); renderImgGrid(); });
   });
 }
 
-function addImgFromBlob(blob){
-  if(imgDataArr.length>=4){toast('Max 4 images per trade');return;}
-  var r=new FileReader();
-  r.onload=function(ev){imgDataArr.push(ev.target.result);renderImgGrid();toast('Image added ✓');};
+function addImgFromBlob(blob) {
+  if (imgDataArr.length >= 4) { toast('Max 4 images per trade'); return; }
+  var r = new FileReader();
+  r.onload = function(ev) { imgDataArr.push(ev.target.result); renderImgGrid(); toast('Image added ✓'); };
   r.readAsDataURL(blob);
 }
 
-function removeImg(i){imgDataArr.splice(i,1);renderImgGrid();}
-function clearAllImgs(){imgDataArr=[];renderImgGrid();}
-
-// wire up file input via addEventListener (more reliable than onchange)
-document.addEventListener('DOMContentLoaded',function(){
-  var inp=document.getElementById('imgInput');
-  var btn=document.getElementById('addImgBtn');
-  btn.addEventListener('click',function(){inp.value='';inp.click();});
-  inp.addEventListener('change',function(){
-    Array.from(inp.files).forEach(function(f){if(f)addImgFromBlob(f);});
-    inp.value='';
-  });
+document.getElementById('addImgBtn').addEventListener('click', function() {
+  document.getElementById('imgInput').value = '';
+  document.getElementById('imgInput').click();
 });
-
-async function pasteFromClipboard(){
-  try{
-    var items=await navigator.clipboard.read();
-    var found=false;
-    for(var item of items){
-      for(var type of item.types){
-        if(type.startsWith('image/')){
-          var blob=await item.getType(type);
-          addImgFromBlob(blob);found=true;break;
+document.getElementById('imgInput').addEventListener('change', function() {
+  Array.from(this.files).forEach(function(f) { addImgFromBlob(f); });
+  this.value = '';
+});
+document.getElementById('pasteBtn').addEventListener('click', function() {
+  navigator.clipboard.read().then(function(items) {
+    var found = false;
+    items.forEach(function(item) {
+      item.types.forEach(function(type) {
+        if (type.startsWith('image/') && !found) {
+          found = true;
+          item.getType(type).then(function(blob) { addImgFromBlob(blob); });
         }
-      }
-      if(found)break;
-    }
-    if(!found)toast('No image in clipboard — copy a screenshot first');
-  }catch(e){
-    toast('Press Ctrl+V anywhere on the page to paste');
-  }
-}
-
-document.addEventListener('paste',function(e){
-  var items=e.clipboardData&&e.clipboardData.items;
-  if(!items)return;
-  for(var i=0;i<items.length;i++){
-    if(items[i].type.indexOf('image')!==-1){addImgFromBlob(items[i].getAsFile());break;}
+      });
+    });
+    if (!found) toast('No image in clipboard');
+  }).catch(function() { toast('Press Ctrl+V anywhere to paste'); });
+});
+document.addEventListener('paste', function(e) {
+  var items = e.clipboardData && e.clipboardData.items;
+  if (!items) return;
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].type.indexOf('image') !== -1) { addImgFromBlob(items[i].getAsFile()); break; }
   }
 });
 
+// ─── LIGHTBOX ───
+function openLightbox(src) { document.getElementById('lightboxImg').src = src; document.getElementById('lightbox').classList.add('open'); }
+document.getElementById('lightbox').addEventListener('click', function() { this.classList.remove('open'); });
+document.getElementById('lightboxClose').addEventListener('click', function(e) { e.stopPropagation(); document.getElementById('lightbox').classList.remove('open'); });
 
-// LIGHTBOX
-function openLightbox(src){
-  document.getElementById('lightboxImg').src=src;
-  document.getElementById('lightbox').classList.add('open');
-}
-function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+// ─── TAGS & RULES ───
+document.getElementById('tag-plan').addEventListener('click', function() { toggleTag(this, 'plan'); });
+document.getElementById('tag-fomo').addEventListener('click', function() { toggleTag(this, 'fomo'); });
+document.getElementById('tag-miss').addEventListener('click', function() { toggleTag(this, 'miss'); });
+document.getElementById('tag-rev').addEventListener('click', function() { toggleTag(this, 'rev'); });
+function toggleTag(el, t) { activeTags[t] = !activeTags[t]; el.classList.toggle('on-' + t, activeTags[t]); }
 
-// TAGS & RULES
-function toggleTag(t){
-  activeTags[t]=!activeTags[t];
-  document.getElementById('tag-'+t).classList.toggle('on-'+t,activeTags[t]);
-}
-function toggleRule(r){
-  activeRules[r]=!activeRules[r];
-  document.getElementById('rule-'+r).classList.toggle('on-rule',activeRules[r]);
+document.getElementById('rule-sl').addEventListener('click', function() { toggleRule(this, 'sl'); });
+document.getElementById('rule-tp').addEventListener('click', function() { toggleRule(this, 'tp'); });
+document.getElementById('rule-conf').addEventListener('click', function() { toggleRule(this, 'conf'); });
+document.getElementById('rule-size').addEventListener('click', function() { toggleRule(this, 'size'); });
+document.getElementById('rule-ses').addEventListener('click', function() { toggleRule(this, 'ses'); });
+function toggleRule(el, r) { activeRules[r] = !activeRules[r]; el.classList.toggle('on-rule', activeRules[r]); }
+
+// ─── RR CALC ───
+['risk','trailExit','fixedTP'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', calcRR);
+});
+function calcRR() {
+  var risk = parseFloat(document.getElementById('risk').value) || 0;
+  var trail = parseFloat(document.getElementById('trailExit').value) || 0;
+  var fixed = parseFloat(document.getElementById('fixedTP').value) || 0;
+  document.getElementById('trailRR').textContent = (risk && trail) ? '1:' + (trail/risk).toFixed(2) : '—';
+  document.getElementById('fixedRR').textContent = (risk && fixed) ? '1:' + (fixed/risk).toFixed(2) : '—';
+  if (risk && trail && fixed) {
+    var d = (fixed - trail).toFixed(2);
+    document.getElementById('diffRR').textContent = (d > 0 ? '+' : '') + d + '%';
+    document.getElementById('diffRR').className = 'val ' + (parseFloat(d) > 0 ? 'val-amber' : 'val-green');
+  } else document.getElementById('diffRR').textContent = '—';
 }
 
-// RR CALC
-function calcRR(){
-  var risk=parseFloat(document.getElementById('risk').value)||0;
-  var trail=parseFloat(document.getElementById('trailExit').value)||0;
-  var fixed=parseFloat(document.getElementById('fixedTP').value)||0;
-  document.getElementById('trailRR').textContent=(risk&&trail)?'1:'+(trail/risk).toFixed(2):'—';
-  document.getElementById('fixedRR').textContent=(risk&&fixed)?'1:'+(fixed/risk).toFixed(2):'—';
-  if(risk&&trail&&fixed){
-    var d=(fixed-trail).toFixed(2);
-    document.getElementById('diffRR').textContent=(d>0?'+':'')+d+'%';
-    document.getElementById('diffRR').className='val '+(parseFloat(d)>0?'val-amber':'val-green');
-  }else document.getElementById('diffRR').textContent='—';
-}
-
-// SAVE
-function saveTrade(){
-  var pair=document.getElementById('pair').value;
-  if(!pair){toast('Select an instrument first');return;}
-  var t={
-    id:Date.now(),pair:pair.toUpperCase(),
-    date:document.getElementById('tradeDate').value||new Date().toISOString().split('T')[0],
-    direction:document.getElementById('direction').value,
-    session:document.getElementById('session').value,
-    result:document.getElementById('result').value,
-    risk:parseFloat(document.getElementById('risk').value)||0,
-    actual:parseFloat(document.getElementById('actual').value)||0,
-    trailExit:parseFloat(document.getElementById('trailExit').value)||0,
-    fixedTP:parseFloat(document.getElementById('fixedTP').value)||0,
-    reason:document.getElementById('reason').value,
-    emotion:document.getElementById('emotion').value,
-    notes:document.getElementById('notes').value,
-    tags:Object.keys(activeTags).filter(k=>activeTags[k]),
-    rules:Object.keys(activeRules).filter(k=>activeRules[k]),
-    imgs:imgDataArr.slice()
+// ─── SAVE ───
+document.getElementById('saveBtn').addEventListener('click', function() {
+  var pair = document.getElementById('pair').value;
+  if (!pair) { toast('Select an instrument first'); return; }
+  var t = {
+    id: Date.now(), pair: pair,
+    date: document.getElementById('tradeDate').value,
+    direction: document.getElementById('direction').value,
+    session: document.getElementById('session').value,
+    result: document.getElementById('result').value,
+    risk: parseFloat(document.getElementById('risk').value) || 0,
+    actual: parseFloat(document.getElementById('actual').value) || 0,
+    trailExit: parseFloat(document.getElementById('trailExit').value) || 0,
+    fixedTP: parseFloat(document.getElementById('fixedTP').value) || 0,
+    reason: document.getElementById('reason').value,
+    emotion: document.getElementById('emotion').value,
+    notes: document.getElementById('notes').value,
+    tags: Object.keys(activeTags).filter(function(k) { return activeTags[k]; }),
+    rules: Object.keys(activeRules).filter(function(k) { return activeRules[k]; }),
+    imgs: imgDataArr.slice()
   };
-  trades.unshift(t);save();
+  trades.unshift(t); saveT();
   sendToTelegram(t);
   resetForm();
   toast('Trade saved ✓');
-  showPage('history',document.querySelectorAll('.nav-btn')[1]);
-  renderHistory();
-}
+  document.querySelector('[data-page="history"]').click();
+});
 
-function resetForm(){
-  ['pair','direction','session','result','risk','actual','trailExit','fixedTP','reason','emotion','notes'].forEach(id=>{document.getElementById(id).value='';});
-  activeTags={};activeRules={};
-  document.querySelectorAll('.tag').forEach(el=>{el.className='tag';});
-  clearAllImgs();calcRR();
-  var t2=new Date();
-  document.getElementById('tradeDate').value=t2.toISOString().split('T')[0];
-  document.getElementById('tradeDateDisplay').textContent=t2.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
-}
-
-// HISTORY
-function setFilter(f,el){
-  histFilter=f;
-  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  renderHistory();
-}
-function renderHistory(){
-  var filtered=trades.filter(t=>{
-    if(histFilter==='all')return true;
-    if(histFilter==='Win'||histFilter==='Loss')return t.result===histFilter;
-    return t.tags&&t.tags.includes(histFilter);
+function resetForm() {
+  ['pair','direction','session','result','risk','actual','trailExit','fixedTP','reason','emotion','notes'].forEach(function(id) {
+    document.getElementById(id).value = '';
   });
-  var c=document.getElementById('historyList');
-  if(!filtered.length){c.innerHTML='<div class="empty">No trades here yet.<br>Log your first trade!</div>';return;}
-  var tagMap={fomo:'FOMO',miss:'Missed',plan:'Planned',rev:'Revenge'};
-  c.innerHTML=filtered.map(t=>{
-    var trRR=t.risk&&t.trailExit?'1:'+(t.trailExit/t.risk).toFixed(2):'—';
-    var fxRR=t.risk&&t.fixedTP?'1:'+(t.fixedTP/t.risk).toFixed(2):'—';
-    var diff=t.risk&&t.trailExit&&t.fixedTP?(t.fixedTP-t.trailExit).toFixed(2):null;
-    var rCls=t.result==='Win'?'res-win':t.result==='Loss'?'res-loss':'res-be';
-    var tags=(t.tags||[]).map(g=>`<span class="etag etag-${g}">${tagMap[g]||g}</span>`).join('');
-    return `<div class="trade-card">
-      <div class="trade-header">
-        <div>
-          <div class="trade-pair">${t.direction?t.direction+' ':''}${t.pair}</div>
-          <div class="trade-meta">${t.date}${t.session?' · '+t.session:''}${t.emotion?' · '+t.emotion:''}</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px">
-          ${t.result?`<span class="result-badge ${rCls}">${t.result}</span>`:''}
-          <button class="del-btn" onclick="deleteTrade(${t.id})">✕</button>
-        </div>
-      </div>
-      ${tags?`<div class="trade-tags">${tags}</div>`:''}
-      <div class="rr-pills">
-        <div>Trail: <span>${trRR}</span></div>
-        <div>Fixed: <span>${fxRR}</span></div>
-        ${diff!==null?`<div>Table: <span style="color:${parseFloat(diff)>0?'var(--amber)':'var(--green)'}">${parseFloat(diff)>0?'+':''}${diff}%</span></div>`:''}
-        ${t.risk?`<div>Risk: <span>${t.risk}%</span></div>`:''}
-      </div>
-      ${t.reason?`<div class="trade-text" style="color:#aaa;font-style:italic">"${t.reason}"</div>`:''}
-      ${t.notes?`<div class="trade-text" style="color:var(--muted)">📝 ${t.notes}</div>`:''}
-      ${(t.imgs&&t.imgs.length)?t.imgs.map(src=>`<img class="trade-img-thumb" src="${src}" onclick="openLightbox(this.src)">`).join(''):(t.img?`<img class="trade-img-thumb" src="${t.img}" onclick="openLightbox(this.src)">`:'')}
+  activeTags = {}; activeRules = {};
+  document.querySelectorAll('.tag').forEach(function(el) { el.className = 'tag'; });
+  imgDataArr = []; renderImgGrid(); calcRR(); setDate();
+}
+
+// ─── HISTORY ───
+document.querySelectorAll('.chip').forEach(function(chip) {
+  chip.addEventListener('click', function() {
+    histFilter = this.dataset.filter;
+    document.querySelectorAll('.chip').forEach(function(c) { c.classList.remove('active'); });
+    this.classList.add('active');
+    renderHistory();
+  });
+});
+
+function renderHistory() {
+  var filtered = trades.filter(function(t) {
+    if (histFilter === 'all') return true;
+    if (histFilter === 'Win' || histFilter === 'Loss') return t.result === histFilter;
+    return t.tags && t.tags.includes(histFilter);
+  });
+  var c = document.getElementById('historyList');
+  if (!filtered.length) { c.innerHTML = '<div class="empty">No trades here yet.</div>'; return; }
+  var tagMap = { fomo:'FOMO', miss:'Missed', plan:'Planned', rev:'Revenge' };
+  c.innerHTML = filtered.map(function(t) {
+    var trRR = t.risk && t.trailExit ? '1:' + (t.trailExit/t.risk).toFixed(2) : '—';
+    var fxRR = t.risk && t.fixedTP ? '1:' + (t.fixedTP/t.risk).toFixed(2) : '—';
+    var diff = t.risk && t.trailExit && t.fixedTP ? (t.fixedTP - t.trailExit).toFixed(2) : null;
+    var rCls = t.result === 'Win' ? 'res-win' : t.result === 'Loss' ? 'res-loss' : 'res-be';
+    var tags = (t.tags||[]).map(function(g) { return '<span class="etag etag-' + g + '">' + (tagMap[g]||g) + '</span>'; }).join('');
+    var imgs = (t.imgs && t.imgs.length ? t.imgs : (t.img ? [t.img] : []));
+    var imgHtml = imgs.map(function(src) { return '<img class="trade-img-thumb" src="' + src + '" data-src="' + src + '">'; }).join('');
+    return '<div class="trade-card">'
+      + '<div class="trade-header"><div>'
+      + '<div class="trade-pair">' + (t.direction ? t.direction + ' ' : '') + t.pair + '</div>'
+      + '<div class="trade-meta">' + t.date + (t.session ? ' · ' + t.session : '') + (t.emotion ? ' · ' + t.emotion : '') + '</div>'
+      + '</div><div style="display:flex;align-items:center;gap:8px">'
+      + (t.result ? '<span class="result-badge ' + rCls + '">' + t.result + '</span>' : '')
+      + '<button class="del-btn" data-id="' + t.id + '">✕</button>'
+      + '</div></div>'
+      + (tags ? '<div class="trade-tags">' + tags + '</div>' : '')
+      + '<div class="rr-pills"><div>Trail: <span>' + trRR + '</span></div><div>Fixed: <span>' + fxRR + '</span></div>'
+      + (diff !== null ? '<div>Table: <span style="color:' + (parseFloat(diff)>0?'var(--amber)':'var(--green)') + '">' + (parseFloat(diff)>0?'+':'') + diff + '%</span></div>' : '')
+      + (t.risk ? '<div>Risk: <span>' + t.risk + '%</span></div>' : '') + '</div>'
+      + (t.reason ? '<div class="trade-text" style="color:#aaa;font-style:italic">"' + t.reason + '"</div>' : '')
+      + (t.notes ? '<div class="trade-text" style="color:var(--muted)">📝 ' + t.notes + '</div>' : '')
+      + imgHtml
+      + '</div>';
   }).join('');
-}
-function deleteTrade(id){
-  if(!confirm('Delete this trade?'))return;
-  trades=trades.filter(t=>t.id!==id);save();renderHistory();toast('Deleted');
-}
-
-// STATS
-function renderStats(){
-  if(!trades.length){
-    document.getElementById('insightsBox').innerHTML='<div class="insight">Log some trades to see your analytics.</div>';
-    ['s-wr','s-total','s-trr','s-frr','s-lost','s-pnl','s-fomo','s-rev'].forEach(id=>{var el=document.getElementById(id);if(el)el.textContent='—';});
-    return;
-  }
-  var closed=trades.filter(t=>t.result==='Win'||t.result==='Loss');
-  var wins=trades.filter(t=>t.result==='Win');
-  var losses=trades.filter(t=>t.result==='Loss');
-  var wr=closed.length?wins.length/closed.length*100:0;
-  var netPL=trades.reduce((s,t)=>s+(t.result==='Win'?1:t.result==='Loss'?-1:0)*(t.actual||0),0);
-  var fomos=trades.filter(t=>t.tags&&t.tags.includes('fomo'));
-  var revs=trades.filter(t=>t.tags&&t.tags.includes('rev'));
-  var trRRs=trades.filter(t=>t.risk&&t.trailExit).map(t=>t.trailExit/t.risk);
-  var fxRRs=trades.filter(t=>t.risk&&t.fixedTP).map(t=>t.fixedTP/t.risk);
-  var diffs=trades.filter(t=>t.risk&&t.trailExit&&t.fixedTP).map(t=>t.fixedTP-t.trailExit);
-  var avg=arr=>arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:0;
-  var avgTrail=avg(trRRs),avgFixed=avg(fxRRs),avgDiff=avg(diffs);
-
-  document.getElementById('s-wr').textContent=closed.length?wr.toFixed(0)+'%':'—';
-  document.getElementById('s-wr').className='stat-val '+(wr>=50?'val-green':'val-red');
-  document.getElementById('s-wrsub').textContent=wins.length+'W / '+losses.length+'L';
-  document.getElementById('s-total').textContent=trades.length;
-  document.getElementById('s-totalsub').textContent=closed.length+' closed';
-  document.getElementById('s-trr').textContent=avgTrail?'1:'+avgTrail.toFixed(2):'—';
-  document.getElementById('s-frr').textContent=avgFixed?'1:'+avgFixed.toFixed(2):'—';
-  document.getElementById('s-lost').textContent=diffs.length?(avgDiff>0?'+':'')+avgDiff.toFixed(2)+'%':'—';
-  document.getElementById('s-pnl').textContent=(netPL>=0?'+':'')+netPL.toFixed(2)+'%';
-  document.getElementById('s-pnl').className='stat-val '+(netPL>=0?'val-green':'val-red');
-  document.getElementById('s-fomo').textContent=fomos.length;
-  document.getElementById('s-fomosub').textContent=fomos.length?fomos.filter(t=>t.result==='Win').length+' won':'no data';
-  document.getElementById('s-rev').textContent=revs.length;
-  document.getElementById('s-revsub').textContent=revs.length?revs.filter(t=>t.result==='Win').length+' won':'no data';
-
-  // Prop tracker
-  var recent=trades.filter(t=>t.result==='Win'&&t.actual>=0.5).slice(0,4);
-  var days=Math.min(recent.length,4);
-  var acc=trades.slice(0,4).reduce((s,t)=>s+(t.result==='Win'?t.actual:-(t.actual||0)),0);
-  document.getElementById('propDays').textContent=days+' / 4';
-  document.getElementById('propBar').style.width=(days/4*100)+'%';
-  document.getElementById('propTotal').textContent=acc.toFixed(2)+'%';
-  document.getElementById('propStatus').textContent=days>=4?'✅ Payout eligible! Request now.':days>0?(4-days)+' more qualifying days needed':'Log 0.5%+ wins to track progress';
-
-  // Sessions
-  var sessions=['London','New York','Asian','Overlap'];
-  var sessHTML='';
-  sessions.forEach(s=>{
-    var st=trades.filter(t=>t.session===s&&(t.result==='Win'||t.result==='Loss'));
-    if(!st.length)return;
-    var sw=st.filter(t=>t.result==='Win').length;
-    var pct=(sw/st.length*100).toFixed(0);
-    sessHTML+=`<div class="bar-wrap"><div class="bar-label"><span>${s}</span><span>${pct}% WR (${st.length} trades)</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${pct>=50?'var(--green)':'var(--red)'}"></div></div></div>`;
+  c.querySelectorAll('.del-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      if (!confirm('Delete this trade?')) return;
+      var id = +this.dataset.id;
+      trades = trades.filter(function(t) { return t.id !== id; });
+      saveT(); renderHistory(); toast('Deleted');
+    });
   });
-  document.getElementById('sessionBars').innerHTML=sessHTML||'<div style="color:var(--muted);font-size:13px">Add session when logging trades</div>';
+  c.querySelectorAll('.trade-img-thumb').forEach(function(img) {
+    img.addEventListener('click', function() { openLightbox(this.dataset.src); });
+  });
+}
 
-  // Streaks
-  var seq=trades.filter(t=>t.result==='Win'||t.result==='Loss').map(t=>t.result).reverse();
+// ─── STATS ───
+function renderStats() {
+  var closed = trades.filter(function(t) { return t.result === 'Win' || t.result === 'Loss'; });
+  var wins = trades.filter(function(t) { return t.result === 'Win'; });
+  var losses = trades.filter(function(t) { return t.result === 'Loss'; });
+  if (!trades.length) { document.getElementById('insightsBox').innerHTML = '<div class="insight">Log some trades to see analytics.</div>'; return; }
+  var wr = closed.length ? wins.length / closed.length * 100 : 0;
+  var netPL = trades.reduce(function(s,t) { return s + (t.result==='Win'?1:t.result==='Loss'?-1:0) * (t.actual||0); }, 0);
+  var fomos = trades.filter(function(t) { return t.tags && t.tags.includes('fomo'); });
+  var revs = trades.filter(function(t) { return t.tags && t.tags.includes('rev'); });
+  var trRRs = trades.filter(function(t) { return t.risk && t.trailExit; }).map(function(t) { return t.trailExit/t.risk; });
+  var fxRRs = trades.filter(function(t) { return t.risk && t.fixedTP; }).map(function(t) { return t.fixedTP/t.risk; });
+  var diffs = trades.filter(function(t) { return t.risk && t.trailExit && t.fixedTP; }).map(function(t) { return t.fixedTP - t.trailExit; });
+  var avg = function(a) { return a.length ? a.reduce(function(x,y){return x+y;},0)/a.length : 0; };
+  var avgTrail = avg(trRRs), avgFixed = avg(fxRRs), avgDiff = avg(diffs);
+  document.getElementById('s-wr').textContent = closed.length ? wr.toFixed(0)+'%' : '—';
+  document.getElementById('s-wr').className = 'stat-val ' + (wr>=50?'val-green':'val-red');
+  document.getElementById('s-wrsub').textContent = wins.length + 'W / ' + losses.length + 'L';
+  document.getElementById('s-total').textContent = trades.length;
+  document.getElementById('s-totalsub').textContent = closed.length + ' closed';
+  document.getElementById('s-trr').textContent = avgTrail ? '1:'+avgTrail.toFixed(2) : '—';
+  document.getElementById('s-frr').textContent = avgFixed ? '1:'+avgFixed.toFixed(2) : '—';
+  document.getElementById('s-lost').textContent = diffs.length ? (avgDiff>0?'+':'')+avgDiff.toFixed(2)+'%' : '—';
+  document.getElementById('s-pnl').textContent = (netPL>=0?'+':'')+netPL.toFixed(2)+'%';
+  document.getElementById('s-pnl').className = 'stat-val ' + (netPL>=0?'val-green':'val-red');
+  document.getElementById('s-fomo').textContent = fomos.length;
+  document.getElementById('s-fomosub').textContent = fomos.length ? fomos.filter(function(t){return t.result==='Win';}).length+' won' : 'no data';
+  document.getElementById('s-rev').textContent = revs.length;
+  document.getElementById('s-revsub').textContent = revs.length ? revs.filter(function(t){return t.result==='Win';}).length+' won' : 'no data';
+  var days = Math.min(trades.filter(function(t){return t.result==='Win'&&t.actual>=0.5;}).slice(0,4).length,4);
+  var acc = trades.slice(0,4).reduce(function(s,t){return s+(t.result==='Win'?t.actual:-(t.actual||0));},0);
+  document.getElementById('propDays').textContent = days+' / 4';
+  document.getElementById('propBar').style.width = (days/4*100)+'%';
+  document.getElementById('propTotal').textContent = acc.toFixed(2)+'%';
+  document.getElementById('propStatus').textContent = days>=4?'✅ Payout eligible!':days>0?(4-days)+' more days needed':'Log 0.5%+ wins to track';
+  var sessions = ['London','New York','Asian','Overlap'];
+  var sessHTML = '';
+  sessions.forEach(function(s) {
+    var st = trades.filter(function(t){return t.session===s&&(t.result==='Win'||t.result==='Loss');});
+    if (!st.length) return;
+    var pct = (st.filter(function(t){return t.result==='Win';}).length/st.length*100).toFixed(0);
+    sessHTML += '<div class="bar-wrap"><div class="bar-label"><span>'+s+'</span><span>'+pct+'% ('+st.length+')</span></div><div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+(pct>=50?'var(--green)':'var(--red)')+'"></div></div></div>';
+  });
+  document.getElementById('sessionBars').innerHTML = sessHTML || '<div style="color:var(--muted);font-size:13px">Add session to trades</div>';
+  var seq = trades.filter(function(t){return t.result==='Win'||t.result==='Loss';}).map(function(t){return t.result;}).reverse();
   var mxW=0,mxL=0,cW=0,cL=0;
-  seq.forEach(r=>{if(r==='Win'){cW++;cL=0;mxW=Math.max(mxW,cW);}else{cL++;cW=0;mxL=Math.max(mxL,cL);}});
+  seq.forEach(function(r){if(r==='Win'){cW++;cL=0;mxW=Math.max(mxW,cW);}else{cL++;cW=0;mxL=Math.max(mxL,cL);}});
   var last=seq[seq.length-1],curS=0;
   for(var i=seq.length-1;i>=0;i--){if(seq[i]===last)curS++;else break;}
-  document.getElementById('streakBox').innerHTML=`
-    <div class="streak-box"><span style="font-size:13px;color:var(--muted)">Best win streak</span><span style="font-size:18px;font-weight:700" class="val-green">${mxW} in a row</span></div>
-    <div class="streak-box"><span style="font-size:13px;color:var(--muted)">Worst loss streak</span><span style="font-size:18px;font-weight:700" class="val-red">${mxL} in a row</span></div>
-    <div class="streak-box"><span style="font-size:13px;color:var(--muted)">Current streak</span><span style="font-size:18px;font-weight:700 class="${last==='Win'?'val-green':'val-red'}">${curS} ${last||'—'}</span></div>`;
-
-  // Rules
+  document.getElementById('streakBox').innerHTML='<div class="streak-box"><span style="font-size:13px;color:var(--muted)">Best win streak</span><span style="font-size:18px;font-weight:700" class="val-green">'+mxW+' in a row</span></div><div class="streak-box"><span style="font-size:13px;color:var(--muted)">Worst loss streak</span><span style="font-size:18px;font-weight:700" class="val-red">'+mxL+' in a row</span></div><div class="streak-box"><span style="font-size:13px;color:var(--muted)">Current streak</span><span style="font-size:18px;font-weight:700;color:'+(last==='Win'?'var(--green)':'var(--red)')+'">'+curS+' '+(last||'—')+'</span></div>';
   var rNames={sl:'SL placed',tp:'TP planned',conf:'Confluence',size:'Correct size',ses:'Right session'};
-  var withRules=trades.filter(t=>t.rules&&t.rules.length);
+  var withRules=trades.filter(function(t){return t.rules&&t.rules.length;});
   var rHTML='';
-  if(withRules.length){
-    Object.keys(rNames).forEach(r=>{
-      var followed=trades.filter(t=>t.rules&&t.rules.includes(r)).length;
-      var pct=(followed/withRules.length*100).toFixed(0);
-      rHTML+=`<div class="bar-wrap"><div class="bar-label"><span>${rNames[r]}</span><span>${pct}%</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${pct>=70?'var(--green)':pct>=40?'var(--amber)':'var(--red)'}"></div></div></div>`;
-    });
-  }
-  document.getElementById('ruleBox').innerHTML=rHTML||'<div style="color:var(--muted);font-size:13px">Tick rules when logging trades</div>';
-
-  // Insights
+  if(withRules.length){Object.keys(rNames).forEach(function(r){var p=(trades.filter(function(t){return t.rules&&t.rules.includes(r);}).length/withRules.length*100).toFixed(0);rHTML+='<div class="bar-wrap"><div class="bar-label"><span>'+rNames[r]+'</span><span>'+p+'%</span></div><div class="bar-track"><div class="bar-fill" style="width:'+p+'%;background:'+(p>=70?'var(--green)':p>=40?'var(--amber)':'var(--red)')+'"></div></div></div>';});}
+  document.getElementById('ruleBox').innerHTML=rHTML||'<div style="color:var(--muted);font-size:13px">Tick rules when logging</div>';
   var ins=[];
-  if(fomos.length>=2){var fw=fomos.filter(t=>t.result==='Win').length/fomos.length*100;ins.push({c:fw<40?'bad':'warn',m:`FOMO trades: ${fomos.length} logged, ${fw.toFixed(0)}% win rate. ${fw<40?'These are hurting your account — focus on waiting for A-grade setups only.':'Decent rate but compare to your planned trade win rate.'}`});}
-  if(revs.length>=2){var rw=revs.filter(t=>t.result==='Win').length/revs.length*100;ins.push({c:'bad',m:`Revenge trades: ${revs.length} logged with ${rw.toFixed(0)}% win rate. This is a direct threat to your prop challenge. After a loss, step away for at least 30 minutes.`});}
-  if(avgDiff>0.1&&diffs.length>=3)ins.push({c:'warn',m:`You leave an average of +${avgDiff.toFixed(2)}% on the table per trade by trailing vs hitting your planned TP. Over 4 trades that's ${(avgDiff*4).toFixed(2)}% — more than your entire payout requirement.`});
-  if(wr>=55&&closed.length>=5)ins.push({c:'good',m:`Strong ${wr.toFixed(0)}% win rate over ${closed.length} trades. At this consistency, risking 0.5% targeting 1:2 RR means you only need 1 winner per day to clear the prop target.`});
-  if(wr<40&&closed.length>=5)ins.push({c:'bad',m:`Win rate is ${wr.toFixed(0)}% over ${closed.length} trades. You need at minimum 1:2.5 RR to be profitable here. Review your entry criteria — are you trading at key levels with confluence?`});
-  var bSess=sessions.map(s=>{var st=trades.filter(t=>t.session===s&&(t.result==='Win'||t.result==='Loss'));return{s,wr:st.length?st.filter(t=>t.result==='Win').length/st.length:0,n:st.length};}).filter(x=>x.n>=3).sort((a,b)=>b.wr-a.wr)[0];
-  if(bSess)ins.push({c:'good',m:`Best session: ${bSess.s} with ${(bSess.wr*100).toFixed(0)}% win rate over ${bSess.n} trades. For your prop challenge, consider trading this session exclusively.`});
-  if(avgFixed>0&&avgTrail>0&&avgFixed>avgTrail*1.3)ins.push({c:'warn',m:`Your fixed TP (avg 1:${avgFixed.toFixed(2)}) is significantly better than your trailing stop RR (avg 1:${avgTrail.toFixed(2)}). Try letting trades hit the original TP before managing.`});
-  if(!ins.length)ins.push({c:'',m:'Keep logging trades to unlock personalised insights about your patterns.'});
-  document.getElementById('insightsBox').innerHTML=ins.map(i=>`<div class="insight ${i.c}">${i.m}</div>`).join('');
+  if(fomos.length>=2){var fw=fomos.filter(function(t){return t.result==='Win';}).length/fomos.length*100;ins.push({c:fw<40?'bad':'warn',m:'FOMO trades: '+fomos.length+' logged, '+fw.toFixed(0)+'% win rate. '+(fw<40?'These are hurting your account.':'Compare to your planned trade win rate.')});}
+  if(revs.length>=2){var rw=revs.filter(function(t){return t.result==='Win';}).length/revs.length*100;ins.push({c:'bad',m:'Revenge trades: '+revs.length+' with '+rw.toFixed(0)+'% win rate. After a loss, step away for 30 mins.'});}
+  if(avgDiff>0.1&&diffs.length>=3)ins.push({c:'warn',m:'You leave +'+avgDiff.toFixed(2)+'% per trade by trailing vs fixed TP. Over 4 trades that is '+(avgDiff*4).toFixed(2)+'% — more than your payout target.'});
+  if(wr>=55&&closed.length>=5)ins.push({c:'good',m:'Strong '+wr.toFixed(0)+'% win rate. At this consistency, 0.5% risk at 1:2 RR clears the prop target in 1 winner per day.'});
+  if(wr<40&&closed.length>=5)ins.push({c:'bad',m:'Win rate '+wr.toFixed(0)+'% over '+closed.length+' trades. Review entry criteria — are you at key levels with confluence?'});
+  if(!ins.length)ins.push({c:'',m:'Keep logging trades to unlock personalised insights.'});
+  document.getElementById('insightsBox').innerHTML=ins.map(function(i){return '<div class="insight '+i.c+'">'+i.m+'</div>';}).join('');
 }
 
-// CHECKLIST
-function renderChecklist(){
-  document.getElementById('checkItems').innerHTML=CHECKS.map((txt,i)=>{
-    var on=checkState[i];
-    return `<div class="check-item" onclick="toggleCheck(${i})">
-      <div class="check-icon ${on?'check-on':''}">${on?'✓':''}</div>
-      <div class="check-text">${txt}</div>
-    </div>`;
+// ─── CHECKLIST ───
+function renderChecklist() {
+  document.getElementById('checkItems').innerHTML = CHECKS.map(function(txt, i) {
+    var on = checkState[i];
+    return '<div class="check-item" data-idx="' + i + '"><div class="check-icon ' + (on?'check-on':'') + '">' + (on?'✓':'') + '</div><div class="check-text">' + txt + '</div></div>';
   }).join('');
+  document.querySelectorAll('.check-item').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var i = +this.dataset.idx; checkState[i] = !checkState[i];
+      localStorage.setItem('tj_checks', JSON.stringify(checkState)); renderChecklist();
+    });
+  });
 }
-function toggleCheck(i){
-  checkState[i]=!checkState[i];
-  localStorage.setItem('tj_checks',JSON.stringify(checkState));
-  renderChecklist();
-}
-function resetChecklist(){checkState={};localStorage.setItem('tj_checks','{}');renderChecklist();}
+document.getElementById('resetCheckBtn').addEventListener('click', function() { checkState = {}; localStorage.setItem('tj_checks','{}'); renderChecklist(); });
 
-// DAILY TARGET
-function updateDaily(){
-  var pl=parseFloat(document.getElementById('todayPL').value)||0;
-  var tgt=parseFloat(document.getElementById('todayTarget').value)||0.5;
-  var pct=Math.min(pl/tgt*100,100);
-  document.getElementById('dailyBar').style.width=pct+'%';
-  document.getElementById('dailyBar').style.background=pct>=100?'var(--green)':pct>=60?'var(--amber)':'var(--blue)';
-  document.getElementById('dailyLeft').textContent=pct>=100?'✅ Target hit! Stop trading now.':(tgt-pl).toFixed(2)+'% more to hit target';
-  document.getElementById('dailyPct').textContent=pct.toFixed(0)+'%';
-}
-
-// TELEGRAM
-var tgSettings=JSON.parse(localStorage.getItem('tj_tg')||'{"token":"","chatId":"","enabled":false}');
-
-function saveTgSettings(){
-  tgSettings.token=document.getElementById('tg-token').value.trim();
-  tgSettings.chatId=document.getElementById('tg-chatid').value.trim();
-  localStorage.setItem('tj_tg',JSON.stringify(tgSettings));
+// ─── DAILY TARGET ───
+document.getElementById('todayPL').addEventListener('input', updateDaily);
+document.getElementById('todayTarget').addEventListener('input', updateDaily);
+function updateDaily() {
+  var pl = parseFloat(document.getElementById('todayPL').value) || 0;
+  var tgt = parseFloat(document.getElementById('todayTarget').value) || 0.5;
+  var pct = Math.min(pl/tgt*100, 100);
+  document.getElementById('dailyBar').style.width = pct + '%';
+  document.getElementById('dailyBar').style.background = pct>=100?'var(--green)':pct>=60?'var(--amber)':'var(--blue)';
+  document.getElementById('dailyLeft').textContent = pct>=100 ? '✅ Target hit! Stop trading.' : (tgt-pl).toFixed(2)+'% more needed';
+  document.getElementById('dailyPct').textContent = pct.toFixed(0)+'%';
 }
 
-function toggleTelegram(){
-  tgSettings.enabled=!tgSettings.enabled;
-  localStorage.setItem('tj_tg',JSON.stringify(tgSettings));
-  document.getElementById('tg-toggle').classList.toggle('on',tgSettings.enabled);
+// ─── TELEGRAM ───
+function loadTgSettings() {
+  document.getElementById('tg-token').value = tgSettings.token || '';
+  document.getElementById('tg-chatid').value = tgSettings.chatId || '';
+  document.getElementById('tg-toggle').classList.toggle('on', tgSettings.enabled);
 }
+document.getElementById('tg-token').addEventListener('input', function() { tgSettings.token = this.value.trim(); localStorage.setItem('tj_tg', JSON.stringify(tgSettings)); });
+document.getElementById('tg-chatid').addEventListener('input', function() { tgSettings.chatId = this.value.trim(); localStorage.setItem('tj_tg', JSON.stringify(tgSettings)); });
+document.getElementById('tg-toggle').addEventListener('click', function() {
+  tgSettings.enabled = !tgSettings.enabled;
+  this.classList.toggle('on', tgSettings.enabled);
+  localStorage.setItem('tj_tg', JSON.stringify(tgSettings));
+});
 
-function loadTgSettings(){
-  document.getElementById('tg-token').value=tgSettings.token||'';
-  document.getElementById('tg-chatid').value=tgSettings.chatId||'';
-  document.getElementById('tg-toggle').classList.toggle('on',tgSettings.enabled);
-}
-
-async function sendToTelegram(t){
-  if(!tgSettings.enabled||!tgSettings.token||!tgSettings.chatId)return;
-  var emoji=t.result==='Win'?'📈':t.result==='Loss'?'📉':'➡️';
-  var resEmoji=t.result==='Win'?'✅':t.result==='Loss'?'❌':'〰️';
-  var trRR=t.risk&&t.trailExit?'1:'+(t.trailExit/t.risk).toFixed(2):'—';
-  var fxRR=t.risk&&t.fixedTP?'1:'+(t.fixedTP/t.risk).toFixed(2):'—';
-  var hashtags=t.result==='Win'?'#Abiy #Abiynas #Abiynaswin':t.result==='Loss'?'#Abiy #Abiynas #Abiynaslose':'#Abiy #Abiynas #Abiynasbe';
-  var msg=[emoji+' *'+(t.direction?t.direction+' ':'')+t.pair+'*',resEmoji+' Result: *'+(t.result||'—')+'*','⚖️ RR with trail: *'+trRR+'*','🎯 RR fixed plan: *'+fxRR+'*'];
-  if(t.session) msg.push('🕐 Session: '+t.session);
-  if(t.reason) msg.push('📝 '+t.reason);
-  if(t.emotion) msg.push('🧠 Emotion: '+t.emotion);
-  msg.push('');msg.push(hashtags);
-  var text=msg.join('\n');
-  try{
-    var imgs=t.imgs&&t.imgs.length?t.imgs:(t.img?[t.img]:[]);
-    var sentMsgIds=[];
-    if(imgs.length===0){
-      var r1=await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:tgSettings.chatId,text:text,parse_mode:'Markdown'})});
-      var d1=await r1.json();if(d1.ok)sentMsgIds.push(d1.result.message_id);
-    }else if(imgs.length===1){
-      var blob=await (await fetch(imgs[0])).blob();
-      var fd=new FormData();fd.append('chat_id',tgSettings.chatId);fd.append('caption',text);fd.append('parse_mode','Markdown');fd.append('photo',blob,'chart.jpg');
-      var r2=await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendPhoto',{method:'POST',body:fd});
-      var d2=await r2.json();if(d2.ok)sentMsgIds.push(d2.result.message_id);
-    }else{
-      var mediaArr=[];var fdM=new FormData();fdM.append('chat_id',tgSettings.chatId);
-      for(var i=0;i<imgs.length;i++){var b=await (await fetch(imgs[i])).blob();var fn='photo'+i+'.jpg';fdM.append(fn,b,fn);var mo={type:'photo',media:'attach://'+fn};if(i===0){mo.caption=text;mo.parse_mode='Markdown';}mediaArr.push(mo);}
-      fdM.append('media',JSON.stringify(mediaArr));
-      var r3=await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendMediaGroup',{method:'POST',body:fdM});
-      var d3=await r3.json();if(d3.ok)d3.result.forEach(function(m){sentMsgIds.push(m.message_id);});
+async function sendToTelegram(t) {
+  if (!tgSettings.enabled || !tgSettings.token || !tgSettings.chatId) return;
+  var emoji = t.result==='Win'?'📈':t.result==='Loss'?'📉':'➡️';
+  var resEmoji = t.result==='Win'?'✅':t.result==='Loss'?'❌':'〰️';
+  var trRR = t.risk&&t.trailExit ? '1:'+(t.trailExit/t.risk).toFixed(2) : '—';
+  var fxRR = t.risk&&t.fixedTP ? '1:'+(t.fixedTP/t.risk).toFixed(2) : '—';
+  var hashtags = t.result==='Win'?'#Abiy #Abiynas #Abiynaswin':t.result==='Loss'?'#Abiy #Abiynas #Abiynaslose':'#Abiy #Abiynas #Abiynasbe';
+  var lines = [emoji+' *'+(t.direction?t.direction+' ':'')+t.pair+'*', resEmoji+' Result: *'+(t.result||'—')+'*', '⚖️ RR trail: *'+trRR+'*', '🎯 RR fixed: *'+fxRR+'*'];
+  if (t.session) lines.push('🕐 Session: '+t.session);
+  if (t.reason) lines.push('📝 '+t.reason);
+  if (t.emotion) lines.push('🧠 '+t.emotion);
+  lines.push(''); lines.push(hashtags);
+  var text = lines.join('\n');
+  try {
+    var imgs = t.imgs&&t.imgs.length ? t.imgs : (t.img?[t.img]:[]);
+    var sentIds = [];
+    if (!imgs.length) {
+      var r1 = await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:tgSettings.chatId,text:text,parse_mode:'Markdown'})});
+      var d1 = await r1.json(); if(d1.ok) sentIds.push(d1.result.message_id);
+    } else if (imgs.length===1) {
+      var blob = await (await fetch(imgs[0])).blob();
+      var fd = new FormData(); fd.append('chat_id',tgSettings.chatId); fd.append('caption',text); fd.append('parse_mode','Markdown'); fd.append('photo',blob,'chart.jpg');
+      var r2 = await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendPhoto',{method:'POST',body:fd});
+      var d2 = await r2.json(); if(d2.ok) sentIds.push(d2.result.message_id);
+    } else {
+      var ma=[]; var fdm=new FormData(); fdm.append('chat_id',tgSettings.chatId);
+      for(var i=0;i<imgs.length;i++){var b=await (await fetch(imgs[i])).blob();var fn='p'+i+'.jpg';fdm.append(fn,b,fn);var mo={type:'photo',media:'attach://'+fn};if(i===0){mo.caption=text;mo.parse_mode='Markdown';}ma.push(mo);}
+      fdm.append('media',JSON.stringify(ma));
+      var r3=await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendMediaGroup',{method:'POST',body:fdm});
+      var d3=await r3.json(); if(d3.ok) d3.result.forEach(function(m){sentIds.push(m.message_id);});
     }
-    if(sentMsgIds.length){
-      var hist=JSON.parse(localStorage.getItem('tj_tg_msgs')||'[]');
-      hist.unshift({tradeId:t.id,msgIds:sentMsgIds,pair:t.pair,result:t.result,date:t.date});
-      if(hist.length>20)hist=hist.slice(0,20);
+    if (sentIds.length) {
+      var hist = JSON.parse(localStorage.getItem('tj_tg_msgs')||'[]');
+      hist.unshift({tradeId:t.id,msgIds:sentIds,pair:t.pair,result:t.result,date:t.date});
+      if(hist.length>20) hist=hist.slice(0,20);
       localStorage.setItem('tj_tg_msgs',JSON.stringify(hist));
       renderTgHistory();
     }
     toast('Posted to Telegram ✓');
-  }catch(e){toast('Telegram error: '+e.message);console.error(e);}
+  } catch(e) { toast('Telegram error — check settings'); console.error(e); }
 }
 
-async function deleteTgMessage(tradeId,msgIds){
-  if(!confirm('Delete this post from Telegram group?'))return;
-  var token=tgSettings.token;var chatId=tgSettings.chatId;
-  if(!token||!chatId){toast('No Telegram settings');return;}
-  var allOk=true;
-  for(var i=0;i<msgIds.length;i++){
-    try{
-      var res=await fetch('https://api.telegram.org/bot'+token+'/deleteMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chatId,message_id:msgIds[i]})});
-      var d=await res.json();if(!d.ok)allOk=false;
-    }catch(e){allOk=false;}
+document.getElementById('testTgBtn').addEventListener('click', async function() {
+  var token = document.getElementById('tg-token').value.trim();
+  var chatId = document.getElementById('tg-chatid').value.trim();
+  var status = document.getElementById('tg-status');
+  if (!token||!chatId) { status.textContent='Enter token and chat ID first'; status.style.color='var(--amber)'; return; }
+  status.textContent='Sending...'; status.style.color='var(--muted)';
+  try {
+    var res = await fetch('https://api.telegram.org/bot'+token+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chatId,text:'✅ Trade Journal connected!\n\nYour trades will auto-post here.\n\n#Abiy #Abiynas',parse_mode:'Markdown'})});
+    var data = await res.json();
+    if (!data.ok) throw new Error(data.description);
+    tgSettings.token=token; tgSettings.chatId=chatId;
+    localStorage.setItem('tj_tg',JSON.stringify(tgSettings));
+    status.textContent='✅ Connected! Check your Telegram group.'; status.style.color='var(--green)';
+  } catch(e) { status.textContent='❌ Failed: '+e.message; status.style.color='var(--red)'; }
+});
+
+async function deleteTgMsg(tradeId, msgIds) {
+  if (!confirm('Delete this post from Telegram?')) return;
+  var allOk = true;
+  for (var i=0;i<msgIds.length;i++) {
+    try {
+      var res = await fetch('https://api.telegram.org/bot'+tgSettings.token+'/deleteMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:tgSettings.chatId,message_id:msgIds[i]})});
+      var d = await res.json(); if(!d.ok) allOk=false;
+    } catch(e) { allOk=false; }
   }
   var hist=JSON.parse(localStorage.getItem('tj_tg_msgs')||'[]');
   hist=hist.filter(function(h){return h.tradeId!==tradeId;});
@@ -825,100 +757,70 @@ async function deleteTgMessage(tradeId,msgIds){
   toast(allOk?'Deleted from Telegram ✓':'Could not delete — may already be gone');
 }
 
-function renderTgHistory(){
-  var box=document.getElementById('tg-history');
-  if(!box)return;
-  var hist=JSON.parse(localStorage.getItem('tj_tg_msgs')||'[]');
-  if(!hist.length){box.innerHTML='<div style="font-size:12px;color:var(--muted);text-align:center;padding:.5rem">No posts yet</div>';return;}
-  box.innerHTML=hist.map(function(h){
-    var rCls=h.result==='Win'?'val-green':h.result==='Loss'?'val-red':'val-blue';
+function renderTgHistory() {
+  var box = document.getElementById('tg-history');
+  if (!box) return;
+  var hist = JSON.parse(localStorage.getItem('tj_tg_msgs')||'[]');
+  if (!hist.length) { box.innerHTML='<div style="font-size:12px;color:var(--muted);text-align:center;padding:.5rem">No posts yet</div>'; return; }
+  box.innerHTML = hist.map(function(h) {
+    var rCls = h.result==='Win'?'val-green':h.result==='Loss'?'val-red':'val-blue';
     return '<div style="display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border)">'
-      +'<div><div style="font-size:13px;font-weight:600">'+h.pair+' — <span class="'+rCls+'">'+h.result+'</span></div><div style="font-size:11px;color:var(--muted)">'+h.date+' · '+h.msgIds.length+' message'+(h.msgIds.length>1?'s':'')+'</div></div>'
-      +'<button data-tradeid="'+h.tradeId+'" data-msgids=\''+JSON.stringify(h.msgIds)+'\' class="del-tg-btn" style="padding:5px 10px;border-radius:var(--radius-sm);border:1px solid var(--red);background:none;color:var(--red);font-size:12px;cursor:pointer">🗑 Delete</button>'
+      +'<div><div style="font-size:13px;font-weight:600">'+h.pair+' — <span class="'+rCls+'">'+h.result+'</span></div>'
+      +'<div style="font-size:11px;color:var(--muted)">'+h.date+'</div></div>'
+      +'<button class="del-tg-btn" data-id="'+h.tradeId+'" data-msgs=\''+JSON.stringify(h.msgIds)+'\' style="padding:5px 10px;border-radius:var(--radius-sm);border:1px solid var(--red);background:none;color:var(--red);font-size:12px;cursor:pointer">🗑 Delete</button>'
       +'</div>';
   }).join('');
-  box.querySelectorAll('.del-tg-btn').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      deleteTgMessage(parseInt(this.getAttribute('data-tradeid')),JSON.parse(this.getAttribute('data-msgids')));
-    });
+  box.querySelectorAll('.del-tg-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() { deleteTgMsg(+this.dataset.id, JSON.parse(this.dataset.msgs)); });
   });
 }
 
-async function testTelegram(){
-  var token=document.getElementById('tg-token').value.trim();
-  var chatId=document.getElementById('tg-chatid').value.trim();
-  var status=document.getElementById('tg-status');
-  if(!token||!chatId){status.textContent='Enter token and chat ID first';status.style.color='var(--amber)';return;}
-  status.textContent='Sending...';status.style.color='var(--muted)';
-  try{
-    var res=await fetch('https://api.telegram.org/bot'+token+'/sendMessage',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({chat_id:chatId,text:'✅ Trade Journal connected successfully!\n\nYour trades will now auto-post here.\n\n#Abiy #Abiynas',parse_mode:'Markdown'})
-    });
-    var data=await res.json();
-    if(!data.ok)throw new Error(data.description);
-    status.textContent='✅ Connected! Check your Telegram group.';status.style.color='var(--green)';
-    tgSettings.token=token;tgSettings.chatId=chatId;
-    localStorage.setItem('tj_tg',JSON.stringify(tgSettings));
-  }catch(e){
-    status.textContent='❌ Failed: '+e.message;status.style.color='var(--red)';
-  }
-}
-
-
-function exportData(){
-  var data=JSON.stringify(trades,null,2);
-  var blob=new Blob([data],{type:'application/json'});
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='trade_journal_backup_'+new Date().toISOString().split('T')[0]+'.json';
-  a.click();toast('Backup downloaded ✓');
-}
-function importData(e){
-  var f=e.target.files[0];if(!f)return;
-  var r=new FileReader();
-  r.onload=function(ev){
-    try{
-      var imported=JSON.parse(ev.target.result);
-      if(!Array.isArray(imported))throw new Error('Invalid');
-      if(!confirm('This will merge '+imported.length+' trades with your existing '+trades.length+' trades. Continue?'))return;
-      var ids=new Set(trades.map(t=>t.id));
-      var newOnes=imported.filter(t=>!ids.has(t.id));
-      trades=[...newOnes,...trades];
-      save();toast('Imported '+newOnes.length+' new trades ✓');
-    }catch(e){toast('Invalid backup file');}
+// ─── BACKUP ───
+document.getElementById('exportBtn').addEventListener('click', function() {
+  var blob = new Blob([JSON.stringify(trades,null,2)],{type:'application/json'});
+  var a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='trades_backup_'+new Date().toISOString().split('T')[0]+'.json'; a.click();
+  toast('Backup downloaded ✓');
+});
+document.getElementById('importBtnShow').addEventListener('click', function() { document.getElementById('importFile').click(); });
+document.getElementById('importFile').addEventListener('change', function() {
+  var f = this.files[0]; if(!f) return;
+  var r = new FileReader();
+  r.onload = function(ev) {
+    try {
+      var imp = JSON.parse(ev.target.result);
+      if (!Array.isArray(imp)) throw new Error('Invalid');
+      if (!confirm('Merge '+imp.length+' trades with your '+trades.length+' existing? Continue?')) return;
+      var ids = new Set(trades.map(function(t){return t.id;}));
+      trades = imp.filter(function(t){return !ids.has(t.id);}).concat(trades);
+      saveT(); toast('Imported ✓'); renderHistory();
+    } catch(e) { toast('Invalid backup file'); }
   };
   r.readAsText(f);
-}
-function exportCSV(){
-  var headers=['Date','Pair','Direction','Session','Result','Risk%','ActualPL%','TrailExit%','FixedTP%','TrailRR','FixedRR','LeftOnTable%','Tags','Emotion','Reason','Notes'];
-  var rows=trades.map(t=>{
-    var trRR=t.risk&&t.trailExit?(t.trailExit/t.risk).toFixed(2):'';
-    var fxRR=t.risk&&t.fixedTP?(t.fixedTP/t.risk).toFixed(2):'';
-    var diff=t.risk&&t.trailExit&&t.fixedTP?(t.fixedTP-t.trailExit).toFixed(2):'';
-    return[t.date,t.pair,t.direction,t.session,t.result,t.risk,t.actual,t.trailExit,t.fixedTP,trRR,fxRR,diff,(t.tags||[]).join('+'),t.emotion,'"'+(t.reason||'').replace(/"/g,"'")+'"','"'+(t.notes||'').replace(/"/g,"'")+'"'].join(',');
+});
+document.getElementById('csvBtn').addEventListener('click', function() {
+  var hdr = ['Date','Pair','Direction','Session','Result','Risk%','PL%','TrailExit%','FixedTP%','TrailRR','FixedRR','LeftOnTable%','Tags','Emotion','Reason','Notes'];
+  var rows = trades.map(function(t) {
+    return [t.date,t.pair,t.direction,t.session,t.result,t.risk,t.actual,t.trailExit,t.fixedTP,
+      t.risk&&t.trailExit?(t.trailExit/t.risk).toFixed(2):'',
+      t.risk&&t.fixedTP?(t.fixedTP/t.risk).toFixed(2):'',
+      t.risk&&t.trailExit&&t.fixedTP?(t.fixedTP-t.trailExit).toFixed(2):'',
+      (t.tags||[]).join('+'),t.emotion,'"'+(t.reason||'').replace(/"/g,"'")+'"','"'+(t.notes||'').replace(/"/g,"'")+'"'].join(',');
   });
-  var csv=[headers.join(','),...rows].join('\n');
-  var blob=new Blob([csv],{type:'text/csv'});
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='trades_'+new Date().toISOString().split('T')[0]+'.csv';
-  a.click();toast('CSV exported ✓');
-}
+  var blob = new Blob([[hdr.join(','),...rows].join('\n')],{type:'text/csv'});
+  var a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='trades_'+new Date().toISOString().split('T')[0]+'.csv'; a.click();
+  toast('CSV exported ✓');
+});
 
-// INIT
-var today=new Date();
-var dateStr=today.toISOString().split('T')[0];
-var displayDate=today.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
-document.getElementById('tradeDate').value=dateStr;
-document.getElementById('tradeDateDisplay').textContent=displayDate;
-renderHistory();renderChecklist();loadTgSettings();renderImgGrid();renderTgHistory();
+// ─── SERVICE WORKER ───
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function(){});
 
-// SERVICE WORKER
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js').catch(()=>{});
-}
+// ─── INIT ───
+setDate();
+renderImgGrid();
+renderHistory();
+renderChecklist();
+loadTgSettings();
+renderTgHistory();
 </script>
 </body>
 </html>
