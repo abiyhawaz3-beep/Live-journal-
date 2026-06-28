@@ -172,10 +172,10 @@ input,select,textarea,button{font-family:inherit}
     <div class="card-title">Chart screenshots <span style="color:var(--muted);font-weight:400">— up to 4 images</span></div>
     <div id="imgGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px"></div>
     <div style="display:flex;gap:8px">
-      <button class="paste-btn" style="flex:1" onclick="document.getElementById('imgInput').click()">📷 Add image</button>
-      <button class="paste-btn" style="flex:1" onclick="pasteFromClipboard()">📋 Paste</button>
+      <button class="paste-btn" style="flex:1" id="addImgBtn">📷 Add image</button>
+      <button class="paste-btn" style="flex:1" onclick="pasteFromClipboard()">📋 Paste (Ctrl+V)</button>
     </div>
-    <input type="file" accept="image/*" id="imgInput" style="display:none" onchange="loadImgFile(event)" multiple>
+    <input type="file" accept="image/*" id="imgInput" style="display:none" multiple>
   </div>
 
   <div class="card">
@@ -188,7 +188,7 @@ input,select,textarea,button{font-family:inherit}
           <option>SPX</option>
         </select>
       </div>
-      <div class="field"><label>Date</label><input type="date" id="tradeDate"></div>
+      <div class="field"><label>Date</label><div style="padding:11px 12px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--muted);font-size:15px" id="tradeDateDisplay"></div><input type="hidden" id="tradeDate"></div>
     </div>
     <div class="row3">
       <div class="field"><label>Direction</label>
@@ -357,6 +357,8 @@ input,select,textarea,button{font-family:inherit}
     </div>
     <button class="action-btn" onclick="testTelegram()">📨 Send test message</button>
     <div id="tg-status" style="font-size:12px;color:var(--muted);margin-top:.5rem;text-align:center"></div>
+    <div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:1rem;margin-bottom:.5rem">Posted messages — tap 🗑 to delete from group</div>
+    <div id="tg-history"></div>
   </div>
 
   <div class="section-head">Backup & restore</div>
@@ -432,12 +434,23 @@ var imgDataArr=[];
 
 function renderImgGrid(){
   var grid=document.getElementById('imgGrid');
-  if(!imgDataArr.length){grid.innerHTML='<div style="grid-column:1/-1;border:2px dashed var(--border2);border-radius:var(--radius);padding:1.5rem;text-align:center;color:var(--muted);font-size:13px">No images yet</div>';return;}
-  grid.innerHTML=imgDataArr.map((src,i)=>`
-    <div style="position:relative">
-      <img src="${src}" style="width:100%;height:100px;object-fit:cover;border-radius:var(--radius-sm);cursor:pointer;display:block" onclick="openLightbox('${src}')">
-      <button onclick="removeImg(${i})" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,.7);border:none;color:#fff;border-radius:50%;width:22px;height:22px;font-size:13px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center">✕</button>
-    </div>`).join('');
+  if(!imgDataArr.length){
+    grid.innerHTML='<div style="grid-column:1/-1;border:2px dashed var(--border2);border-radius:var(--radius);padding:1.5rem;text-align:center;color:var(--muted);font-size:13px">No images yet — click Add image or paste</div>';
+    return;
+  }
+  grid.innerHTML=imgDataArr.map((src,i)=>
+    '<div style="position:relative">' +
+    '<img src="'+src+'" style="width:100%;height:110px;object-fit:cover;border-radius:var(--radius-sm);cursor:pointer;display:block" data-idx="'+i+'">' +
+    '<button data-del="'+i+'" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,.75);border:none;color:#fff;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;line-height:24px;text-align:center;padding:0">✕</button>' +
+    '</div>'
+  ).join('');
+  // attach events after render
+  grid.querySelectorAll('img[data-idx]').forEach(function(el){
+    el.addEventListener('click',function(){openLightbox(imgDataArr[parseInt(this.getAttribute('data-idx'))]);});
+  });
+  grid.querySelectorAll('button[data-del]').forEach(function(el){
+    el.addEventListener('click',function(e){e.stopPropagation();removeImg(parseInt(this.getAttribute('data-del')));});
+  });
 }
 
 function addImgFromBlob(blob){
@@ -447,28 +460,37 @@ function addImgFromBlob(blob){
   r.readAsDataURL(blob);
 }
 
-function loadImgFile(e){
-  Array.from(e.target.files).forEach(f=>{if(f)addImgFromBlob(f);});
-  e.target.value='';
-}
-
 function removeImg(i){imgDataArr.splice(i,1);renderImgGrid();}
-
 function clearAllImgs(){imgDataArr=[];renderImgGrid();}
+
+// wire up file input via addEventListener (more reliable than onchange)
+document.addEventListener('DOMContentLoaded',function(){
+  var inp=document.getElementById('imgInput');
+  var btn=document.getElementById('addImgBtn');
+  btn.addEventListener('click',function(){inp.value='';inp.click();});
+  inp.addEventListener('change',function(){
+    Array.from(inp.files).forEach(function(f){if(f)addImgFromBlob(f);});
+    inp.value='';
+  });
+});
 
 async function pasteFromClipboard(){
   try{
     var items=await navigator.clipboard.read();
+    var found=false;
     for(var item of items){
       for(var type of item.types){
         if(type.startsWith('image/')){
           var blob=await item.getType(type);
-          addImgFromBlob(blob);return;
+          addImgFromBlob(blob);found=true;break;
         }
       }
+      if(found)break;
     }
-    toast('No image found in clipboard');
-  }catch(e){toast('Tap the page first then press Ctrl+V');}
+    if(!found)toast('No image in clipboard — copy a screenshot first');
+  }catch(e){
+    toast('Press Ctrl+V anywhere on the page to paste');
+  }
 }
 
 document.addEventListener('paste',function(e){
@@ -543,8 +565,11 @@ function saveTrade(){
 function resetForm(){
   ['pair','direction','session','result','risk','actual','trailExit','fixedTP','reason','emotion','notes'].forEach(id=>{document.getElementById(id).value='';});
   activeTags={};activeRules={};
+  document.querySelectorAll('.tag').forEach(el=>{el.className='tag';});
   clearAllImgs();calcRR();
-  document.getElementById('tradeDate').value=new Date().toISOString().split('T')[0];
+  var t2=new Date();
+  document.getElementById('tradeDate').value=t2.toISOString().split('T')[0];
+  document.getElementById('tradeDateDisplay').textContent=t2.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
 }
 
 // HISTORY
@@ -747,58 +772,76 @@ async function sendToTelegram(t){
   var trRR=t.risk&&t.trailExit?'1:'+(t.trailExit/t.risk).toFixed(2):'—';
   var fxRR=t.risk&&t.fixedTP?'1:'+(t.fixedTP/t.risk).toFixed(2):'—';
   var hashtags=t.result==='Win'?'#Abiy #Abiynas #Abiynaswin':t.result==='Loss'?'#Abiy #Abiynas #Abiynaslose':'#Abiy #Abiynas #Abiynasbe';
-  var msg=[
-    emoji+' *'+(t.direction?t.direction+' ':'')+t.pair+'*',
-    resEmoji+' Result: *'+(t.result||'—')+'*',
-    '⚖️ RR with trail: *'+trRR+'*',
-    '🎯 RR fixed plan: *'+fxRR+'*',
-  ];
+  var msg=[emoji+' *'+(t.direction?t.direction+' ':'')+t.pair+'*',resEmoji+' Result: *'+(t.result||'—')+'*','⚖️ RR with trail: *'+trRR+'*','🎯 RR fixed plan: *'+fxRR+'*'];
   if(t.session) msg.push('🕐 Session: '+t.session);
   if(t.reason) msg.push('📝 '+t.reason);
   if(t.emotion) msg.push('🧠 Emotion: '+t.emotion);
-  msg.push('');
-  msg.push(hashtags);
+  msg.push('');msg.push(hashtags);
   var text=msg.join('\n');
-
   try{
     var imgs=t.imgs&&t.imgs.length?t.imgs:(t.img?[t.img]:[]);
-
+    var sentMsgIds=[];
     if(imgs.length===0){
-      // just send text
-      await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendMessage',{
-        method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({chat_id:tgSettings.chatId,text:text,parse_mode:'Markdown'})
-      });
-    } else if(imgs.length===1){
-      // send photo with caption
+      var r1=await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:tgSettings.chatId,text:text,parse_mode:'Markdown'})});
+      var d1=await r1.json();if(d1.ok)sentMsgIds.push(d1.result.message_id);
+    }else if(imgs.length===1){
       var blob=await (await fetch(imgs[0])).blob();
-      var fd=new FormData();
-      fd.append('chat_id',tgSettings.chatId);
-      fd.append('caption',text);
-      fd.append('parse_mode','Markdown');
-      fd.append('photo',blob,'chart.jpg');
-      await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendPhoto',{method:'POST',body:fd});
-    } else {
-      // send media group with caption on first image
-      var mediaArr=[];
-      var fdMulti=new FormData();
-      fdMulti.append('chat_id',tgSettings.chatId);
-      for(var i=0;i<imgs.length;i++){
-        var b=await (await fetch(imgs[i])).blob();
-        var fname='photo'+i+'.jpg';
-        fdMulti.append(fname,b,fname);
-        var mediaObj={type:'photo',media:'attach://'+fname};
-        if(i===0){mediaObj.caption=text;mediaObj.parse_mode='Markdown';}
-        mediaArr.push(mediaObj);
-      }
-      fdMulti.append('media',JSON.stringify(mediaArr));
-      await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendMediaGroup',{method:'POST',body:fdMulti});
+      var fd=new FormData();fd.append('chat_id',tgSettings.chatId);fd.append('caption',text);fd.append('parse_mode','Markdown');fd.append('photo',blob,'chart.jpg');
+      var r2=await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendPhoto',{method:'POST',body:fd});
+      var d2=await r2.json();if(d2.ok)sentMsgIds.push(d2.result.message_id);
+    }else{
+      var mediaArr=[];var fdM=new FormData();fdM.append('chat_id',tgSettings.chatId);
+      for(var i=0;i<imgs.length;i++){var b=await (await fetch(imgs[i])).blob();var fn='photo'+i+'.jpg';fdM.append(fn,b,fn);var mo={type:'photo',media:'attach://'+fn};if(i===0){mo.caption=text;mo.parse_mode='Markdown';}mediaArr.push(mo);}
+      fdM.append('media',JSON.stringify(mediaArr));
+      var r3=await fetch('https://api.telegram.org/bot'+tgSettings.token+'/sendMediaGroup',{method:'POST',body:fdM});
+      var d3=await r3.json();if(d3.ok)d3.result.forEach(function(m){sentMsgIds.push(m.message_id);});
+    }
+    if(sentMsgIds.length){
+      var hist=JSON.parse(localStorage.getItem('tj_tg_msgs')||'[]');
+      hist.unshift({tradeId:t.id,msgIds:sentMsgIds,pair:t.pair,result:t.result,date:t.date});
+      if(hist.length>20)hist=hist.slice(0,20);
+      localStorage.setItem('tj_tg_msgs',JSON.stringify(hist));
+      renderTgHistory();
     }
     toast('Posted to Telegram ✓');
-  }catch(e){
-    toast('Telegram error: '+e.message);
-    console.error(e);
+  }catch(e){toast('Telegram error: '+e.message);console.error(e);}
+}
+
+async function deleteTgMessage(tradeId,msgIds){
+  if(!confirm('Delete this post from Telegram group?'))return;
+  var token=tgSettings.token;var chatId=tgSettings.chatId;
+  if(!token||!chatId){toast('No Telegram settings');return;}
+  var allOk=true;
+  for(var i=0;i<msgIds.length;i++){
+    try{
+      var res=await fetch('https://api.telegram.org/bot'+token+'/deleteMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chatId,message_id:msgIds[i]})});
+      var d=await res.json();if(!d.ok)allOk=false;
+    }catch(e){allOk=false;}
   }
+  var hist=JSON.parse(localStorage.getItem('tj_tg_msgs')||'[]');
+  hist=hist.filter(function(h){return h.tradeId!==tradeId;});
+  localStorage.setItem('tj_tg_msgs',JSON.stringify(hist));
+  renderTgHistory();
+  toast(allOk?'Deleted from Telegram ✓':'Could not delete — may already be gone');
+}
+
+function renderTgHistory(){
+  var box=document.getElementById('tg-history');
+  if(!box)return;
+  var hist=JSON.parse(localStorage.getItem('tj_tg_msgs')||'[]');
+  if(!hist.length){box.innerHTML='<div style="font-size:12px;color:var(--muted);text-align:center;padding:.5rem">No posts yet</div>';return;}
+  box.innerHTML=hist.map(function(h){
+    var rCls=h.result==='Win'?'val-green':h.result==='Loss'?'val-red':'val-blue';
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border)">'
+      +'<div><div style="font-size:13px;font-weight:600">'+h.pair+' — <span class="'+rCls+'">'+h.result+'</span></div><div style="font-size:11px;color:var(--muted)">'+h.date+' · '+h.msgIds.length+' message'+(h.msgIds.length>1?'s':'')+'</div></div>'
+      +'<button data-tradeid="'+h.tradeId+'" data-msgids=\''+JSON.stringify(h.msgIds)+'\' class="del-tg-btn" style="padding:5px 10px;border-radius:var(--radius-sm);border:1px solid var(--red);background:none;color:var(--red);font-size:12px;cursor:pointer">🗑 Delete</button>'
+      +'</div>';
+  }).join('');
+  box.querySelectorAll('.del-tg-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      deleteTgMessage(parseInt(this.getAttribute('data-tradeid')),JSON.parse(this.getAttribute('data-msgids')));
+    });
+  });
 }
 
 async function testTelegram(){
@@ -865,8 +908,12 @@ function exportCSV(){
 }
 
 // INIT
-document.getElementById('tradeDate').value=new Date().toISOString().split('T')[0];
-renderHistory();renderChecklist();loadTgSettings();renderImgGrid();
+var today=new Date();
+var dateStr=today.toISOString().split('T')[0];
+var displayDate=today.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+document.getElementById('tradeDate').value=dateStr;
+document.getElementById('tradeDateDisplay').textContent=displayDate;
+renderHistory();renderChecklist();loadTgSettings();renderImgGrid();renderTgHistory();
 
 // SERVICE WORKER
 if('serviceWorker' in navigator){
