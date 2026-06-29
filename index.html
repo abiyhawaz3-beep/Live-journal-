@@ -867,6 +867,16 @@ async function sendToTelegram(t) {
   var r = methodRs(t);
   var hashtags = t.result==='Win'?'#Abiy #Abiynas #Abiynaswin':t.result==='Loss'?'#Abiy #Abiynas #Abiynaslose':'#Abiy #Abiynas #Abiynasbe';
   var lines = [emoji+' *'+(t.direction?t.direction+' ':'')+t.pair+'*', resEmoji+' Result: *'+(t.result||'—')+'*'];
+  if (t.risk || t.actual) {
+    var moneyLine = '';
+    if (t.risk) moneyLine += '💰 Risked: '+t.risk+'%';
+    if (t.actual) {
+      var sign = t.result==='Loss' ? '−' : '+';
+      var word = t.result==='Loss' ? 'Lost' : t.result==='Win' ? 'Gained' : 'Result';
+      moneyLine += (moneyLine?' · ':'💰 ')+word+': '+sign+t.actual+'%';
+    }
+    if (moneyLine) lines.push(moneyLine);
+  }
   if (r.trail !== null) lines.push('📈 Trail: *'+(r.trail>=0?'+':'')+r.trail.toFixed(1)+'R*');
   if (r.fixed !== null) lines.push('🎯 Fixed 3R: *'+(r.fixed>=0?'+':'')+r.fixed.toFixed(1)+'R*');
   if (r.level !== null) lines.push('📍 Target: *'+(r.level>=0?'+':'')+r.level.toFixed(1)+'R*');
