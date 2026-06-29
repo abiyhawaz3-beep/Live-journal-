@@ -1,4 +1,15 @@
-const CACHE='tradejournalv1';
-const FILES=['./','/index.html','/manifest.json'];
-self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES))));
-self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
+const CACHE='tradejournal-v3';
+self.addEventListener('install', e => { self.skipWaiting(); });
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys().then(keys => Promise.all(keys.map(k => k!==CACHE ? caches.delete(k) : null))).then(()=>self.clients.claim()));
+});
+self.addEventListener('fetch', e => {
+  // Network-first: always try fresh, fall back to cache only when offline
+  e.respondWith(
+    fetch(e.request).then(res => {
+      const copy = res.clone();
+      caches.open(CACHE).then(c => c.put(e.request, copy)).catch(()=>{});
+      return res;
+    }).catch(() => caches.match(e.request))
+  );
+});
