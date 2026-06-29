@@ -128,6 +128,35 @@ input,select,textarea,button{font-family:inherit}
 .nav-btn.active{color:var(--blue)}
 .nav-btn svg{width:22px;height:22px}
 .date-display{padding:11px 12px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--muted);font-size:15px}
+/* EXIT METHODS */
+.method-box{background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px}
+.r-quick{display:flex;gap:6px;flex-wrap:wrap}
+.r-btn{flex:1;min-width:48px;padding:9px 4px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:var(--card);color:var(--muted);font-size:13px;font-weight:600;cursor:pointer}
+.r-btn.on{background:var(--blue-bg);color:var(--blue);border-color:var(--blue)}
+.r-stepper{display:flex;gap:6px;align-items:stretch;margin-top:8px}
+.r-step-btn{padding:10px 14px;background:var(--card);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--blue);font-size:15px;font-weight:700;cursor:pointer;min-width:48px}
+.r-step-btn:active{background:var(--blue-bg)}
+.r-stepper input{flex:1;text-align:center;font-weight:600}
+.method-head{font-size:14px;font-weight:600;margin-bottom:8px}
+.method-sub{font-size:11px;color:var(--muted);font-weight:400}
+.yn-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text)}
+.yn{display:flex;gap:6px}
+.yn-btn{padding:7px 16px;border-radius:20px;border:1px solid var(--border2);background:var(--card);color:var(--muted);font-size:13px;font-weight:600;cursor:pointer}
+.yn-btn.yes-on{background:var(--green-bg);color:var(--green);border-color:var(--green)}
+.yn-btn.no-on{background:var(--red-bg);color:var(--red);border-color:var(--red)}
+.trade-score{margin-top:10px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px}
+.ts-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px}
+.ts-name{color:var(--muted)}
+.ts-val{font-weight:700;font-size:15px}
+.ts-winner{color:var(--green)}
+.ts-best-badge{font-size:10px;background:var(--green-bg);color:var(--green);padding:2px 7px;border-radius:10px;margin-left:6px}
+/* SCOREBOARD STATS */
+.score-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:.75rem}
+.score-method{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.score-method:last-child{border:none}
+.score-method-name{font-size:14px;font-weight:600}
+.score-method-r{font-size:20px;font-weight:700}
+.score-method-sub{font-size:11px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -170,20 +199,58 @@ input,select,textarea,button{font-family:inherit}
     </div>
   </div>
   <div class="card">
-    <div class="card-title">Risk / reward</div>
-    <div class="row2">
-      <div class="field"><label>Risk %</label><input type="number" id="risk" placeholder="0.5" step="0.1" inputmode="decimal"></div>
-      <div class="field"><label>Actual P&L %</label><input type="number" id="actual" placeholder="0.75" step="0.1" inputmode="decimal"></div>
+    <div class="card-title">Exit comparison — Trail vs Fixed 3R vs Target</div>
+    <div class="field"><label>Risk % on account</label><input type="number" id="risk" placeholder="0.5" step="0.1" inputmode="decimal"></div>
+    <div class="field"><label>Actual P&L % on account <span style="color:var(--dim)">— for prop tracker</span></label><input type="number" id="actual" placeholder="0.75" step="0.1" inputmode="decimal"></div>
+
+    <div class="method-box">
+      <div class="method-head">📈 Trailing stop <span class="method-sub">your method now</span></div>
+      <div class="r-quick" id="trailQuick">
+        <button type="button" class="r-btn" data-r="-1">Stopped</button>
+        <button type="button" class="r-btn" data-r="1">1R</button>
+        <button type="button" class="r-btn" data-r="2">2R</button>
+        <button type="button" class="r-btn" data-r="3">3R</button>
+        <button type="button" class="r-btn" data-r="4">4R</button>
+        <button type="button" class="r-btn" data-r="5">5R</button>
+      </div>
+      <div class="field" style="margin:8px 0 0"><label>Or adjust exact R (tap − / + or type)</label>
+        <div class="r-stepper">
+          <button type="button" class="r-step-btn" data-step="trailR" data-d="-0.1">−</button>
+          <input type="number" id="trailR" placeholder="4.2" step="0.1" inputmode="decimal">
+          <button type="button" class="r-step-btn" data-step="trailR" data-d="0.1">+</button>
+        </div>
+      </div>
     </div>
-    <div class="row2">
-      <div class="field"><label>Trailing stop exit %</label><input type="number" id="trailExit" placeholder="0.6" step="0.1" inputmode="decimal"></div>
-      <div class="field"><label>Fixed TP % (plan)</label><input type="number" id="fixedTP" placeholder="1.0" step="0.1" inputmode="decimal"></div>
+
+    <div class="method-box">
+      <div class="method-head">🎯 Fixed 3R <span class="method-sub">your old method</span></div>
+      <div class="yn-row"><span>Did price reach 3R?</span>
+        <div class="yn"><button type="button" class="yn-btn" data-q="fixed3" data-v="yes">Yes</button><button type="button" class="yn-btn" data-q="fixed3" data-v="no">No</button></div>
+      </div>
     </div>
-    <div class="rr-grid">
-      <div class="rr-cell"><div class="lbl">Trail RR</div><div class="val val-blue" id="trailRR">—</div></div>
-      <div class="rr-cell"><div class="lbl">Fixed RR</div><div class="val val-green" id="fixedRR">—</div></div>
-      <div class="rr-cell"><div class="lbl" id="diffLbl">Trail vs plan</div><div class="val val-amber" id="diffRR">—</div></div>
+
+    <div class="method-box">
+      <div class="method-head">📍 Target level <span class="method-sub">wait for a price level</span></div>
+      <div class="r-quick" id="levelQuick">
+        <button type="button" class="r-btn" data-r="1.5">1.5R</button>
+        <button type="button" class="r-btn" data-r="2">2R</button>
+        <button type="button" class="r-btn" data-r="2.5">2.5R</button>
+        <button type="button" class="r-btn" data-r="3">3R</button>
+        <button type="button" class="r-btn" data-r="4">4R</button>
+      </div>
+      <div class="field" style="margin:8px 0 8px"><label>Or adjust exact level R (tap − / + or type)</label>
+        <div class="r-stepper">
+          <button type="button" class="r-step-btn" data-step="levelR" data-d="-0.1">−</button>
+          <input type="number" id="levelR" placeholder="2.5" step="0.1" inputmode="decimal">
+          <button type="button" class="r-step-btn" data-step="levelR" data-d="0.1">+</button>
+        </div>
+      </div>
+      <div class="yn-row"><span>Did price reach the level?</span>
+        <div class="yn"><button type="button" class="yn-btn" data-q="level" data-v="yes">Yes</button><button type="button" class="yn-btn" data-q="level" data-v="no">No</button></div>
+      </div>
     </div>
+
+    <div class="trade-score" id="tradeScore"></div>
   </div>
   <div class="card">
     <div class="card-title">Trade type</div>
@@ -255,13 +322,13 @@ input,select,textarea,button{font-family:inherit}
     <div class="prog-labels"><span>0.5%+ profit per day</span><span id="propTotal">0%</span></div>
     <div id="propStatus" style="font-size:12px;color:var(--muted);margin-top:6px"></div>
   </div>
+  <div class="section-head">Exit method scoreboard</div>
+  <div class="card" id="exitScoreboard"></div>
   <div class="stat-grid">
     <div class="stat-card"><div class="stat-lbl">Win rate</div><div class="stat-val" id="s-wr">—</div><div class="stat-sub" id="s-wrsub"></div></div>
     <div class="stat-card"><div class="stat-lbl">Total trades</div><div class="stat-val" id="s-total">0</div><div class="stat-sub" id="s-totalsub"></div></div>
-    <div class="stat-card"><div class="stat-lbl">Avg trail RR</div><div class="stat-val" id="s-trr">—</div><div class="stat-sub">trailing stop</div></div>
-    <div class="stat-card"><div class="stat-lbl">Avg fixed RR</div><div class="stat-val" id="s-frr">—</div><div class="stat-sub">original plan</div></div>
-    <div class="stat-card"><div class="stat-lbl" id="s-lost-lbl">Trail vs plan</div><div class="stat-val val-amber" id="s-lost">—</div><div class="stat-sub">avg per trade</div></div>
     <div class="stat-card"><div class="stat-lbl">Net P&L</div><div class="stat-val" id="s-pnl">—</div><div class="stat-sub">% of account</div></div>
+    <div class="stat-card"><div class="stat-lbl">Best exit style</div><div class="stat-val" id="s-best" style="font-size:18px">—</div><div class="stat-sub" id="s-bestsub"></div></div>
     <div class="stat-card"><div class="stat-lbl">FOMO trades</div><div class="stat-val val-amber" id="s-fomo">0</div><div class="stat-sub" id="s-fomosub"></div></div>
     <div class="stat-card"><div class="stat-lbl">Revenge trades</div><div class="stat-val val-red" id="s-rev">0</div><div class="stat-sub" id="s-revsub"></div></div>
   </div>
@@ -466,36 +533,92 @@ document.getElementById('rule-ses').addEventListener('click', function() { toggl
 function toggleRule(el, r) { activeRules[r] = !activeRules[r]; el.classList.toggle('on-rule', activeRules[r]); }
 
 // ─── RR CALC ───
-['risk','trailExit','fixedTP'].forEach(function(id) {
-  document.getElementById(id).addEventListener('input', calcRR);
+// ─── EXIT COMPARISON ───
+var methodState = { fixed3: null, level: null }; // null / true(yes) / false(no)
+
+['risk','trailR','levelR'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', renderTradeScore);
 });
-function calcRR() {
-  var risk = parseFloat(document.getElementById('risk').value) || 0;
-  var trail = parseFloat(document.getElementById('trailExit').value) || 0;
-  var fixed = parseFloat(document.getElementById('fixedTP').value) || 0;
-  document.getElementById('trailRR').textContent = (risk && trail) ? '1:' + (trail/risk).toFixed(2) : '—';
-  document.getElementById('fixedRR').textContent = (risk && fixed) ? '1:' + (fixed/risk).toFixed(2) : '—';
-  var lblEl = document.getElementById('diffLbl');
-  var valEl = document.getElementById('diffRR');
-  if (risk && trail && fixed) {
-    var d = fixed - trail; // positive = left money on table, negative = trail beat plan
-    if (d > 0.001) {
-      // trailing exited early — left money on the table
-      valEl.textContent = '−' + d.toFixed(2) + '%';
-      valEl.className = 'val val-amber';
-      if (lblEl) lblEl.textContent = 'Left on table';
-    } else if (d < -0.001) {
-      // trailing beat the fixed plan
-      valEl.textContent = '+' + Math.abs(d).toFixed(2) + '%';
-      valEl.className = 'val val-green';
-      if (lblEl) lblEl.textContent = 'Trail gained';
-    } else {
-      valEl.textContent = '0%';
-      valEl.className = 'val val-blue';
-      if (lblEl) lblEl.textContent = 'Same as plan';
+
+// Quick R buttons fill the matching input
+document.querySelectorAll('#trailQuick .r-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.getElementById('trailR').value = this.dataset.r;
+    document.querySelectorAll('#trailQuick .r-btn').forEach(function(b){b.classList.remove('on');});
+    this.classList.add('on');
+    renderTradeScore();
+  });
+});
+document.querySelectorAll('#levelQuick .r-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.getElementById('levelR').value = this.dataset.r;
+    document.querySelectorAll('#levelQuick .r-btn').forEach(function(b){b.classList.remove('on');});
+    this.classList.add('on');
+    // auto-set "did price reach level" to yes since they picked a value
+    renderTradeScore();
+  });
+});
+
+// +0.1 / −0.1 steppers
+document.querySelectorAll('.r-step-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var input = document.getElementById(this.dataset.step);
+    var cur = parseFloat(input.value) || 0;
+    var d = parseFloat(this.dataset.d);
+    input.value = (Math.round((cur + d) * 10) / 10).toFixed(1);
+    // clear quick-button highlight since manual adjust
+    var quick = this.dataset.step === 'trailR' ? 'trailQuick' : 'levelQuick';
+    document.querySelectorAll('#'+quick+' .r-btn').forEach(function(b){b.classList.remove('on');});
+    renderTradeScore();
+  });
+});
+
+document.querySelectorAll('.yn-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var q = this.dataset.q, v = this.dataset.v === 'yes';
+    methodState[q] = (methodState[q] === v) ? null : v; // tap again to clear
+    document.querySelectorAll('.yn-btn[data-q="'+q+'"]').forEach(function(b) {
+      b.classList.remove('yes-on','no-on');
+    });
+    if (methodState[q] === true) this.classList.add('yes-on');
+    else if (methodState[q] === false) document.querySelector('.yn-btn[data-q="'+q+'"][data-v="no"]').classList.add('no-on');
+    if (methodState[q] !== null) {
+      var sel = methodState[q] ? '[data-v="yes"]' : '[data-v="no"]';
+      document.querySelector('.yn-btn[data-q="'+q+'"]'+sel).classList.add(methodState[q]?'yes-on':'no-on');
     }
-  } else { valEl.textContent = '—'; if (lblEl) lblEl.textContent = 'Trail vs plan'; }
+    renderTradeScore();
+  });
+});
+
+// compute R for each method from a trade-like object
+function methodRs(o) {
+  var trail = (o.trailR !== '' && o.trailR !== undefined && o.trailR !== null && !isNaN(parseFloat(o.trailR))) ? parseFloat(o.trailR) : null;
+  var fixed = o.fixed3 === true ? 3 : (o.fixed3 === false ? -1 : null);
+  var level = o.level === true ? (o.levelR ? parseFloat(o.levelR) : null) : (o.level === false ? -1 : null);
+  return { trail: trail, fixed: fixed, level: level };
 }
+
+function renderTradeScore() {
+  var o = {
+    trailR: document.getElementById('trailR').value,
+    levelR: document.getElementById('levelR').value,
+    fixed3: methodState.fixed3,
+    level: methodState.level
+  };
+  var r = methodRs(o);
+  var box = document.getElementById('tradeScore');
+  if (r.trail === null && r.fixed === null && r.level === null) { box.innerHTML = '<div style="font-size:12px;color:var(--muted);text-align:center">Fill in the methods above to compare</div>'; return; }
+  var rows = [];
+  if (r.trail !== null) rows.push({ n: '📈 Trailing', v: r.trail });
+  if (r.fixed !== null) rows.push({ n: '🎯 Fixed 3R', v: r.fixed });
+  if (r.level !== null) rows.push({ n: '📍 Target level', v: r.level });
+  var best = Math.max.apply(null, rows.map(function(x){return x.v;}));
+  box.innerHTML = rows.map(function(x) {
+    var win = (x.v === best && rows.length > 1);
+    return '<div class="ts-row"><span class="ts-name">' + x.n + (win?'<span class="ts-best-badge">BEST</span>':'') + '</span><span class="ts-val ' + (x.v>=0?'val-green':'val-red') + '">' + (x.v>=0?'+':'') + x.v.toFixed(2) + 'R</span></div>';
+  }).join('');
+}
+function calcRR() { renderTradeScore(); } // alias used elsewhere
 
 // ─── SAVE ───
 document.getElementById('saveBtn').addEventListener('click', function() {
@@ -509,8 +632,10 @@ document.getElementById('saveBtn').addEventListener('click', function() {
     result: document.getElementById('result').value,
     risk: parseFloat(document.getElementById('risk').value) || 0,
     actual: parseFloat(document.getElementById('actual').value) || 0,
-    trailExit: parseFloat(document.getElementById('trailExit').value) || 0,
-    fixedTP: parseFloat(document.getElementById('fixedTP').value) || 0,
+    trailR: document.getElementById('trailR').value !== '' ? parseFloat(document.getElementById('trailR').value) : null,
+    levelR: document.getElementById('levelR').value !== '' ? parseFloat(document.getElementById('levelR').value) : null,
+    fixed3: methodState.fixed3,
+    level: methodState.level,
     reason: document.getElementById('reason').value,
     emotion: document.getElementById('emotion').value,
     notes: document.getElementById('notes').value,
@@ -526,12 +651,15 @@ document.getElementById('saveBtn').addEventListener('click', function() {
 });
 
 function resetForm() {
-  ['pair','direction','session','result','risk','actual','trailExit','fixedTP','reason','emotion','notes'].forEach(function(id) {
-    document.getElementById(id).value = '';
+  ['pair','direction','session','result','risk','actual','trailR','levelR','reason','emotion','notes'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.value = '';
   });
   activeTags = {}; activeRules = {};
+  methodState = { fixed3: null, level: null };
   document.querySelectorAll('.tag').forEach(function(el) { el.className = 'tag'; });
-  imgDataArr = []; renderImgGrid(); calcRR(); setDate();
+  document.querySelectorAll('.yn-btn').forEach(function(el) { el.classList.remove('yes-on','no-on'); });
+  document.querySelectorAll('.r-btn').forEach(function(el) { el.classList.remove('on'); });
+  imgDataArr = []; renderImgGrid(); renderTradeScore(); setDate();
 }
 
 // ─── HISTORY ───
@@ -554,13 +682,21 @@ function renderHistory() {
   if (!filtered.length) { c.innerHTML = '<div class="empty">No trades here yet.</div>'; return; }
   var tagMap = { fomo:'FOMO', miss:'Missed', plan:'Planned', rev:'Revenge' };
   c.innerHTML = filtered.map(function(t) {
-    var trRR = t.risk && t.trailExit ? '1:' + (t.trailExit/t.risk).toFixed(2) : '—';
-    var fxRR = t.risk && t.fixedTP ? '1:' + (t.fixedTP/t.risk).toFixed(2) : '—';
-    var diff = t.risk && t.trailExit && t.fixedTP ? (t.fixedTP - t.trailExit).toFixed(2) : null;
+    var r = methodRs(t);
     var rCls = t.result === 'Win' ? 'res-win' : t.result === 'Loss' ? 'res-loss' : 'res-be';
     var tags = (t.tags||[]).map(function(g) { return '<span class="etag etag-' + g + '">' + (tagMap[g]||g) + '</span>'; }).join('');
     var imgs = (t.imgs && t.imgs.length ? t.imgs : (t.img ? [t.img] : []));
     var imgHtml = imgs.map(function(src) { return '<img class="trade-img-thumb" src="' + src + '" data-src="' + src + '">'; }).join('');
+    // build R pills, mark best
+    var methods = [];
+    if (r.trail !== null) methods.push({n:'📈 Trail', v:r.trail});
+    if (r.fixed !== null) methods.push({n:'🎯 3R', v:r.fixed});
+    if (r.level !== null) methods.push({n:'📍 Level', v:r.level});
+    var best = methods.length ? Math.max.apply(null, methods.map(function(x){return x.v;})) : null;
+    var pills = methods.map(function(m){
+      var isBest = (methods.length>1 && m.v===best);
+      return '<div>'+m.n+': <span style="color:'+(m.v>=0?'var(--green)':'var(--red)')+';font-weight:700">'+(m.v>=0?'+':'')+m.v.toFixed(1)+'R'+(isBest?' ★':'')+'</span></div>';
+    }).join('');
     return '<div class="trade-card">'
       + '<div class="trade-header"><div>'
       + '<div class="trade-pair">' + (t.direction ? t.direction + ' ' : '') + t.pair + '</div>'
@@ -570,9 +706,7 @@ function renderHistory() {
       + '<button class="del-btn" data-id="' + t.id + '">✕</button>'
       + '</div></div>'
       + (tags ? '<div class="trade-tags">' + tags + '</div>' : '')
-      + '<div class="rr-pills"><div>Trail: <span>' + trRR + '</span></div><div>Fixed: <span>' + fxRR + '</span></div>'
-      + (diff !== null ? '<div>' + (parseFloat(diff)>0.001?'Left: <span style="color:var(--amber)">−'+parseFloat(diff).toFixed(2)+'%':(parseFloat(diff)<-0.001?'Trail +<span style="color:var(--green)">'+Math.abs(parseFloat(diff)).toFixed(2)+'%':'Trail <span style="color:var(--blue)">=plan')) + '</span></div>' : '')
-      + (t.risk ? '<div>Risk: <span>' + t.risk + '%</span></div>' : '') + '</div>'
+      + (pills ? '<div class="rr-pills">' + pills + (t.risk ? '<div>Risk: <span>' + t.risk + '%</span></div>' : '') + '</div>' : '')
       + (t.reason ? '<div class="trade-text" style="color:#aaa;font-style:italic">"' + t.reason + '"</div>' : '')
       + (t.notes ? '<div class="trade-text" style="color:var(--muted)">📝 ' + t.notes + '</div>' : '')
       + imgHtml
@@ -601,37 +735,47 @@ function renderStats() {
   var netPL = trades.reduce(function(s,t) { return s + (t.result==='Win'?1:t.result==='Loss'?-1:0) * (t.actual||0); }, 0);
   var fomos = trades.filter(function(t) { return t.tags && t.tags.includes('fomo'); });
   var revs = trades.filter(function(t) { return t.tags && t.tags.includes('rev'); });
-  var trRRs = trades.filter(function(t) { return t.risk && t.trailExit; }).map(function(t) { return t.trailExit/t.risk; });
-  var fxRRs = trades.filter(function(t) { return t.risk && t.fixedTP; }).map(function(t) { return t.fixedTP/t.risk; });
-  var diffs = trades.filter(function(t) { return t.risk && t.trailExit && t.fixedTP; }).map(function(t) { return t.fixedTP - t.trailExit; });
-  var avg = function(a) { return a.length ? a.reduce(function(x,y){return x+y;},0)/a.length : 0; };
-  var avgTrail = avg(trRRs), avgFixed = avg(fxRRs), avgDiff = avg(diffs);
+
+  // ── Exit method scoreboard: sum R for each style across trades that have that method ──
+  var sumTrail=0, nTrail=0, sumFixed=0, nFixed=0, sumLevel=0, nLevel=0;
+  trades.forEach(function(t){
+    var r = methodRs(t);
+    if (r.trail !== null) { sumTrail += r.trail; nTrail++; }
+    if (r.fixed !== null) { sumFixed += r.fixed; nFixed++; }
+    if (r.level !== null) { sumLevel += r.level; nLevel++; }
+  });
+  var sb = [
+    {key:'trail', name:'📈 Trailing', sum:sumTrail, n:nTrail},
+    {key:'fixed', name:'🎯 Fixed 3R', sum:sumFixed, n:nFixed},
+    {key:'level', name:'📍 Target level', sum:sumLevel, n:nLevel}
+  ];
+  var withData = sb.filter(function(x){return x.n>0;});
+  var bestStyle = withData.length ? withData.slice().sort(function(a,b){return b.sum-a.sum;})[0] : null;
+  var sbBox = document.getElementById('exitScoreboard');
+  if (!withData.length) {
+    sbBox.innerHTML = '<div style="font-size:13px;color:var(--muted);text-align:center;padding:.5rem">Log trades with exit methods to compare</div>';
+  } else {
+    sbBox.innerHTML = sb.map(function(x){
+      if (!x.n) return '<div class="ts-row"><span class="ts-name">'+x.name+'</span><span style="color:var(--dim);font-size:12px">no data</span></div>';
+      var isBest = bestStyle && x.key===bestStyle.key && withData.length>1;
+      var avgR = x.sum/x.n;
+      return '<div class="ts-row" style="padding:8px 0;border-bottom:1px solid var(--border)">'
+        + '<span class="ts-name">'+x.name+(isBest?' <span style="background:var(--green-bg);color:var(--green);font-size:10px;padding:2px 6px;border-radius:8px;font-weight:700">BEST</span>':'')+'<br><span style="font-size:11px;color:var(--muted)">'+x.n+' trades · avg '+(avgR>=0?'+':'')+avgR.toFixed(2)+'R</span></span>'
+        + '<span style="font-size:18px;font-weight:700;color:'+(x.sum>=0?'var(--green)':'var(--red)')+'">'+(x.sum>=0?'+':'')+x.sum.toFixed(1)+'R</span></div>';
+    }).join('');
+    if (withData.length>1 && bestStyle) {
+      var second = withData.slice().sort(function(a,b){return b.sum-a.sum;})[1];
+      var edge = (bestStyle.sum - second.sum).toFixed(1);
+      sbBox.innerHTML += '<div style="font-size:12px;color:var(--muted);margin-top:8px;text-align:center">'+bestStyle.name.replace(/[^a-zA-Z0-9 ]/g,'').trim()+' leads by +'+edge+'R over '+second.name.replace(/[^a-zA-Z0-9 ]/g,'').trim()+'</div>';
+    }
+  }
   document.getElementById('s-wr').textContent = closed.length ? wr.toFixed(0)+'%' : '—';
   document.getElementById('s-wr').className = 'stat-val ' + (wr>=50?'val-green':'val-red');
   document.getElementById('s-wrsub').textContent = wins.length + 'W / ' + losses.length + 'L';
   document.getElementById('s-total').textContent = trades.length;
   document.getElementById('s-totalsub').textContent = closed.length + ' closed';
-  document.getElementById('s-trr').textContent = avgTrail ? '1:'+avgTrail.toFixed(2) : '—';
-  document.getElementById('s-frr').textContent = avgFixed ? '1:'+avgFixed.toFixed(2) : '—';
-  if (diffs.length) {
-    var lostEl = document.getElementById('s-lost');
-    var lostLbl = document.getElementById('s-lost-lbl');
-    if (avgDiff > 0.001) {
-      lostEl.textContent = '−' + avgDiff.toFixed(2) + '%';
-      lostEl.className = 'stat-val val-amber';
-      if (lostLbl) lostLbl.textContent = 'Left on table';
-    } else if (avgDiff < -0.001) {
-      lostEl.textContent = '+' + Math.abs(avgDiff).toFixed(2) + '%';
-      lostEl.className = 'stat-val val-green';
-      if (lostLbl) lostLbl.textContent = 'Trail gained';
-    } else {
-      lostEl.textContent = '0%';
-      lostEl.className = 'stat-val val-blue';
-      if (lostLbl) lostLbl.textContent = 'Trail = plan';
-    }
-  } else {
-    document.getElementById('s-lost').textContent = '—';
-  }
+  document.getElementById('s-best').textContent = bestStyle ? bestStyle.name.replace(/[^a-zA-Z0-9 ]/g,'').trim() : '—';
+  document.getElementById('s-bestsub').textContent = bestStyle ? (bestStyle.sum>=0?'+':'')+bestStyle.sum.toFixed(1)+'R total' : '';
   document.getElementById('s-pnl').textContent = (netPL>=0?'+':'')+netPL.toFixed(2)+'%';
   document.getElementById('s-pnl').className = 'stat-val ' + (netPL>=0?'val-green':'val-red');
   document.getElementById('s-fomo').textContent = fomos.length;
@@ -720,10 +864,12 @@ async function sendToTelegram(t) {
   if (!tgSettings.enabled || !tgSettings.token || !tgSettings.chatId) return;
   var emoji = t.result==='Win'?'📈':t.result==='Loss'?'📉':'➡️';
   var resEmoji = t.result==='Win'?'✅':t.result==='Loss'?'❌':'〰️';
-  var trRR = t.risk&&t.trailExit ? '1:'+(t.trailExit/t.risk).toFixed(2) : '—';
-  var fxRR = t.risk&&t.fixedTP ? '1:'+(t.fixedTP/t.risk).toFixed(2) : '—';
+  var r = methodRs(t);
   var hashtags = t.result==='Win'?'#Abiy #Abiynas #Abiynaswin':t.result==='Loss'?'#Abiy #Abiynas #Abiynaslose':'#Abiy #Abiynas #Abiynasbe';
-  var lines = [emoji+' *'+(t.direction?t.direction+' ':'')+t.pair+'*', resEmoji+' Result: *'+(t.result||'—')+'*', '⚖️ RR trail: *'+trRR+'*', '🎯 RR fixed: *'+fxRR+'*'];
+  var lines = [emoji+' *'+(t.direction?t.direction+' ':'')+t.pair+'*', resEmoji+' Result: *'+(t.result||'—')+'*'];
+  if (r.trail !== null) lines.push('📈 Trail: *'+(r.trail>=0?'+':'')+r.trail.toFixed(1)+'R*');
+  if (r.fixed !== null) lines.push('🎯 Fixed 3R: *'+(r.fixed>=0?'+':'')+r.fixed.toFixed(1)+'R*');
+  if (r.level !== null) lines.push('📍 Target: *'+(r.level>=0?'+':'')+r.level.toFixed(1)+'R*');
   if (t.session) lines.push('🕐 Session: '+t.session);
   if (t.reason) lines.push('📝 '+t.reason);
   if (t.emotion) lines.push('🧠 '+t.emotion);
@@ -831,12 +977,19 @@ document.getElementById('importFile').addEventListener('change', function() {
   r.readAsText(f);
 });
 document.getElementById('csvBtn').addEventListener('click', function() {
-  var hdr = ['Date','Pair','Direction','Session','Result','Risk%','PL%','TrailExit%','FixedTP%','TrailRR','FixedRR','LeftOnTable%','Tags','Emotion','Reason','Notes'];
+  var hdr = ['Date','Pair','Direction','Session','Result','Risk%','PL%','TrailR','Fixed3R','TargetLevelR','BestMethod','Tags','Emotion','Reason','Notes'];
   var rows = trades.map(function(t) {
-    return [t.date,t.pair,t.direction,t.session,t.result,t.risk,t.actual,t.trailExit,t.fixedTP,
-      t.risk&&t.trailExit?(t.trailExit/t.risk).toFixed(2):'',
-      t.risk&&t.fixedTP?(t.fixedTP/t.risk).toFixed(2):'',
-      t.risk&&t.trailExit&&t.fixedTP?(t.fixedTP-t.trailExit).toFixed(2):'',
+    var r = methodRs(t);
+    var methods = [];
+    if (r.trail !== null) methods.push({n:'Trail', v:r.trail});
+    if (r.fixed !== null) methods.push({n:'Fixed3R', v:r.fixed});
+    if (r.level !== null) methods.push({n:'Level', v:r.level});
+    var best = methods.length ? methods.slice().sort(function(a,b){return b.v-a.v;})[0].n : '';
+    return [t.date,t.pair,t.direction,t.session,t.result,t.risk,t.actual,
+      r.trail!==null?r.trail.toFixed(1):'',
+      r.fixed!==null?r.fixed.toFixed(1):'',
+      r.level!==null?r.level.toFixed(1):'',
+      best,
       (t.tags||[]).join('+'),t.emotion,'"'+(t.reason||'').replace(/"/g,"'")+'"','"'+(t.notes||'').replace(/"/g,"'")+'"'].join(',');
   });
   var blob = new Blob([[hdr.join(','),...rows].join('\n')],{type:'text/csv'});
