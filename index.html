@@ -710,6 +710,7 @@ function renderHistory() {
       + (t.reason ? '<div class="trade-text" style="color:#aaa;font-style:italic">"' + t.reason + '"</div>' : '')
       + (t.notes ? '<div class="trade-text" style="color:var(--muted)">📝 ' + t.notes + '</div>' : '')
       + imgHtml
+      + '<button class="post-tg-btn" data-id="' + t.id + '" style="width:100%;margin-top:10px;padding:9px;border-radius:var(--radius-sm);border:1px solid var(--blue);background:var(--blue-bg);color:var(--blue);font-size:13px;font-weight:600;cursor:pointer">📨 Post to Telegram</button>'
       + '</div>';
   }).join('');
   c.querySelectorAll('.del-btn').forEach(function(btn) {
@@ -718,6 +719,16 @@ function renderHistory() {
       var id = +this.dataset.id;
       trades = trades.filter(function(t) { return t.id !== id; });
       saveT(); renderHistory(); toast('Deleted');
+    });
+  });
+  c.querySelectorAll('.post-tg-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      if (!tgSettings.enabled || !tgSettings.token || !tgSettings.chatId) {
+        toast('Set up Telegram in Tools first'); return;
+      }
+      var id = +this.dataset.id;
+      var trade = trades.filter(function(t){return t.id===id;})[0];
+      if (trade) { this.textContent = '📨 Posting...'; sendToTelegram(trade); var b=this; setTimeout(function(){b.textContent='📨 Post to Telegram';},2000); }
     });
   });
   c.querySelectorAll('.trade-img-thumb').forEach(function(img) {
